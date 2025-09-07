@@ -1,11 +1,13 @@
 #ifndef EMPLOYEE_H
 #define EMPLOYEE_H
 
-struct employee
+const int EMPLOYEE_NAME_SIZE = 10;
+
+struct Employee
 {
-    int num;        // идентификационный номер сотрудника
-    char name[10];  // имя сотрудника
-    double hours;   // количество отработанных часов
+    int num;        // employee ID
+    char name[EMPLOYEE_NAME_SIZE];  // employee name
+    double hours;   // hours worked
 };
 
-#endif
+#endif // EMPLOYEE_H
