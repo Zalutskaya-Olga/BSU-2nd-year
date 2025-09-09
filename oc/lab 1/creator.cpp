@@ -1,6 +1,3 @@
-//cd "/Users/olga_zalutskaya/Documents/oc/lab 1/"
-//./creator employees.dat 3
-
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -75,7 +72,6 @@ private:
                 continue;
             }
             
-            // Manual validation for C++98 compatibility
             bool valid = true;
             for (std::size_t i = 0; i < input.length(); ++i)
             {
@@ -116,7 +112,6 @@ private:
                 continue;
             }
             
-            // Manual validation for C++98 compatibility
             bool valid = true;
             bool has_dot = false;
             for (std::size_t i = 0; i < input.length(); ++i)
