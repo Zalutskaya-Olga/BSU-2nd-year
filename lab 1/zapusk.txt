@@ -1,0 +1,4 @@
+
+
+cd "/Users/olga_zalutskaya/Documents/oc/lab 1/"
+ ./main
