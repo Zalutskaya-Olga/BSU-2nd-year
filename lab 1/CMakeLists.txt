@@ -61,7 +61,3 @@ set(CPACK_PACKAGE_VERSION_MAJOR 1)
 set(CPACK_PACKAGE_VERSION_MINOR 0)
 set(CPACK_PACKAGE_VERSION_PATCH 0)
 include(CPack)
-
-
-
-cmake /Users/olga_zalutskaya/Documents/oc/lab 1/CMakeLists.txt 
