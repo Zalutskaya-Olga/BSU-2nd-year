@@ -1,0 +1,10 @@
+{
+	"InstallScripts" : 
+	[
+		"/Users/olga_zalutskaya/Documents/oc/lab1/cmake_install.cmake",
+		"/Users/olga_zalutskaya/Documents/oc/lab1/core/cmake_install.cmake",
+		"/Users/olga_zalutskaya/Documents/oc/lab1/apps/cmake_install.cmake",
+		"/Users/olga_zalutskaya/Documents/oc/lab1/tests/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
