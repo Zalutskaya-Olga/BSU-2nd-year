@@ -1,0 +1,1 @@
+/usr/bin/c++  -arch arm64 -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/unit_tests.dir/unit/test_employee.cpp.o CMakeFiles/unit_tests.dir/unit/test_creator.cpp.o CMakeFiles/unit_tests.dir/unit/test_reporter.cpp.o CMakeFiles/unit_tests.dir/unit/test_main_app.cpp.o -o unit_tests  ../core/libemployee_core.a
