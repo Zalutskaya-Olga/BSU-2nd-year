@@ -1,0 +1,2 @@
+/usr/bin/ar qc libemployee_core.a CMakeFiles/employee_core.dir/employee.cpp.o
+/usr/bin/ranlib libemployee_core.a
