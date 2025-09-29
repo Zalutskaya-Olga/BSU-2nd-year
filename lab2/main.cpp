@@ -15,7 +15,6 @@ private:
     int max_value_;
     double average_value_;
 
-    // Prevent copying
     ThreadManager(const ThreadManager&);
     ThreadManager& operator=(const ThreadManager&);
 
