@@ -1,0 +1,46 @@
+ArrayUtils
+
+Время работы: 1.5-2 часа
+
+Простая библиотека для удаления дубликатов из массива чисел.
+
+Что делает
+
+Удаляет повторяющиеся числа из массива
+Сохраняет порядок первых вхождений
+Проверяет что массив не пустой
+Файлы
+
+kolok2.h - заголовочный файл
+kolok2.cpp - реализация функций
+main.cpp - программа для ввода чисел с клавиатуры
+test_kolok2.cpp - тесты
+CMakeLists.txt - настройка сборки
+Как собрать
+
+bash
+mkdir build
+cd build
+cmake ..
+make
+Как запустить
+
+Основная программа:
+
+bash
+./kolok2_main
+Тесты:
+
+bash
+./kolok2_test
+Пример
+
+cpp
+std::vector<int> input = {1, 2, 2, 3, 1};
+std::vector<int> result = ArrayUtils::removeDuplicates(input);
+// результат: {1, 2, 3}
+Функции
+
+removeDuplicates() - удаляет дубликаты
+validateArray() - проверяет массив
+getVersion() - возвращает версию
