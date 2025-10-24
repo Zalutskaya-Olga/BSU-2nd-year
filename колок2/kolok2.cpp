@@ -4,6 +4,7 @@
 #include <functional>
 #include <set>
 #include <iterator>
+#include <climits>  
 
 const char* const ArrayUtils::LIBRARY_VERSION = "1.0.0";
 
@@ -15,10 +16,7 @@ std::vector<int> ArrayUtils::removeDuplicates(const std::vector<int>& input) {
         throw std::invalid_argument("Input array cannot be empty");
     }
     
-    if (!validateArray(input)) {
-        throw std::invalid_argument("Input array contains invalid values");
-    }
-    
+   
     std::vector<int> result;
     std::set<int> seenElements;
     
@@ -32,8 +30,8 @@ std::vector<int> ArrayUtils::removeDuplicates(const std::vector<int>& input) {
                 seenElements.insert(*it);
             }
         }
-        
-        std::vector<int>(result).swap(result);
+
+        result.shrink_to_fit();
         
     } catch (const std::bad_alloc& e) {
         std::vector<int> empty;
@@ -49,53 +47,9 @@ std::vector<int> ArrayUtils::removeDuplicates(const std::vector<int>& input) {
 }
 
 bool ArrayUtils::validateArray(const std::vector<int>& input) {
-    return !input.empty();
+    return !input.empty(); 
 }
 
 std::string ArrayUtils::getVersion() {
     return std::string(LIBRARY_VERSION);
-}
-
-int main() {
-    try {
-        std::vector<int> inputArray;
-        int n, value;
-        
-        std::cout << "Enter the number of elements: ";
-        std::cin >> n;
-        
-        if (n <= 0) {
-            std::cout << "Number of elements must be positive!" << std::endl;
-            return 1;
-        }
-        
-        std::cout << "Enter " << n << " integers:" << std::endl;
-        for (int i = 0; i < n; ++i) {
-            std::cout << "Element " << (i + 1) << ": ";
-            std::cin >> value;
-            inputArray.push_back(value);
-        }
-        
-        std::vector<int> result = ArrayUtils::removeDuplicates(inputArray);
-        
-        std::cout << "Original array: ";
-        for (size_t i = 0; i < inputArray.size(); ++i) {
-            std::cout << inputArray[i] << " ";
-        }
-        std::cout << std::endl;
-        
-        std::cout << "Array after removing duplicates: ";
-        for (size_t i = 0; i < result.size(); ++i) {
-            std::cout << result[i] << " ";
-        }
-        std::cout << std::endl;
-        
-        std::cout << "Library version: " << ArrayUtils::getVersion() << std::endl;
-        
-    } catch (const std::exception& e) {
-        std::cerr << "Error: " << e.what() << std::endl;
-        return 1;
-    }
-    
-    return 0;
 }
