@@ -39,7 +39,6 @@ TEST_F(ThreadManagerTest, ReplaceElements) {
     ThreadManager manager;
     manager.setData(test_data_);
     
-    manager.setData(test_data_);
     manager.findMinMax();
     manager.calculateAverage();
     
@@ -47,10 +46,13 @@ TEST_F(ThreadManagerTest, ReplaceElements) {
     
     const auto& modified_data = manager.getData();
     double avg = manager.getAverageValue();
+    int min_val = manager.getMinValue();
+    int max_val = manager.getMaxValue();
     
     for (int value : modified_data) {
-        EXPECT_NE(value, 1); 
-        EXPECT_NE(value, 9); 
+        if (value == min_val || value == max_val) {
+            EXPECT_EQ(value, static_cast<int>(avg));
+        }
     }
 }
 
