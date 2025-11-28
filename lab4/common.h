@@ -8,13 +8,19 @@ const int MAX_FILE = 100;
 
 struct Msg {
     char text[MAX_LEN + 1];
-    bool empty;
+    bool is_valid;  
 };
 
 struct SharedData {
-    Msg msg;
-    bool sender_ready;
-    bool receiver_ready;
+    Msg messages[MAX_FILE];  
+    int read_index;          
+    int write_index;         
+    int count;               
+    int max_messages;        
+    int sender_count;        
+    int ready_senders;      
+    bool receiver_ready;     
+    bool shutdown;           
 };
 
 #endif
