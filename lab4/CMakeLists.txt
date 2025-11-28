@@ -4,6 +4,10 @@ project(Lab4_Sync)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+if(APPLE)
+    set(CMAKE_MACOSX_RPATH 1)
+endif()
+
 add_executable(receiver receiver.cpp)
 add_executable(sender sender.cpp)
 
