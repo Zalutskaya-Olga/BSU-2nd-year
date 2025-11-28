@@ -6,10 +6,28 @@
 #include <sys/stat.h>
 #include <sys/mman.h>
 #include <cstdlib>
+#include <signal.h>
 
 #include "common.h"
 
 using namespace std;
+
+SharedData* shared = nullptr;
+int fd = -1;
+
+void cleanup() {
+    if (shared != nullptr && shared != MAP_FAILED) {
+        munmap(shared, sizeof(SharedData));
+    }
+    if (fd != -1) {
+        close(fd);
+    }
+}
+
+void signal_handler(int sig) {
+    cleanup();
+    exit(0);
+}
 
 int main(int argc, char* argv[]) {
     if (argc != 2) {
@@ -17,64 +35,108 @@ int main(int argc, char* argv[]) {
         return 1;
     }
     
-    string fname = argv[1];
+    signal(SIGINT, signal_handler);
     
-    int fd = open(fname.c_str(), O_RDWR);
+    string fname = argv[1];
+    int sender_id = getpid();
+    char cwd[1024];
+    getcwd(cwd, sizeof(cwd));
+    cout << "Текущая директория: " << cwd << endl;
+    
+    fd = open(fname.c_str(), O_RDWR);
     if (fd == -1) {
-        perror("Sender: Ошибка открытия файла");
+        cout << "Ошибка открытия файла: " << fname << endl;
         return 1;
     }
     
-    SharedData* shared = (SharedData*)mmap(nullptr, sizeof(SharedData), PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
+    shared = (SharedData*)mmap(nullptr, sizeof(SharedData), PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
     if (shared == MAP_FAILED) {
-        perror("Sender: Ошибка mmap");
+        cout << "Ошибка mmap" << endl;
         close(fd);
         return 1;
     }
     
-    cout << "Sender: Процесс запущен. Сигнализирую о готовности..." << endl;
-    shared->sender_ready = true;
+    shared->ready_senders++;
+    cout << "=======================================" << endl;
+    cout << "         SENDER " << sender_id << " ЗАПУЩЕН" << endl;
+    cout << "=======================================" << endl;
+    cout << "Ожидаю другие процессы..." << endl;
+    
+    while (shared->ready_senders < shared->sender_count && !shared->shutdown) {
+        usleep(100000);
+    }
+    
+    if (shared->shutdown) {
+        cout << "Receiver завершил работу. Выход." << endl;
+        cleanup();
+        return 0;
+    }
+    
+    cout << "Все процессы готовы!" << endl;
+    cout << "Максимальная длина сообщения: " << MAX_LEN << " символов" << endl;
+    cout << "Размер буфера: " << shared->max_messages << " сообщений" << endl;
+    cout << "Всего процессов: " << shared->sender_count << endl;
     
     string cmd;
-    string msg_text;
+    string message;
     
-    while (true) {
-        cout << "\nSender commands:" << endl;
-        cout << "1. send - отправить сообщение" << endl;
-        cout << "2. exit - завершить работу" << endl;
+    while (!shared->shutdown) {
+        cout << "\n---------------------------------------" << endl;
+        cout << "             SENDER " << sender_id << endl;
+        cout << "---------------------------------------" << endl;
+        cout << "Команды:" << endl;
+        cout << "   'send' - отправить сообщение" << endl;
+        cout << "   'exit' - завершить работу" << endl;
         cout << "Введите команду: ";
         
         getline(cin, cmd);
         
         if (cmd == "send") {
-            if (!shared->msg.empty) {
-                cout << "Sender: Файл занят. Ожидаю освобождения..." << endl;
-                while (!shared->msg.empty) {
-                    usleep(100000);
+            if (shared->count >= shared->max_messages) {
+                cout << "Буфер заполнен! Ожидаю освобождения..." << endl;
+                while (shared->count >= shared->max_messages && !shared->shutdown) {
+                    usleep(500000);
+                    cout << "Ожидание..." << endl;
                 }
+                if (shared->shutdown) break;
             }
             
-            cout << "Sender: Введите сообщение (до " << MAX_LEN << " символов): ";
-            getline(cin, msg_text);
+            cout << "Введите сообщение (до " << MAX_LEN << " символов): ";
+            getline(cin, message);
             
-            if (msg_text.length() > MAX_LEN) {
-                cout << "Sender: Сообщение слишком длинное! Максимум " << MAX_LEN << " символов." << endl;
+            if (message.length() > MAX_LEN) {
+                cout << "Ошибка: сообщение слишком длинное! Максимум " << MAX_LEN << " символов." << endl;
                 continue;
             }
             
-            strcpy(shared->msg.text, msg_text.c_str());
-            shared->msg.empty = false;
-            cout << "Sender: Сообщение '" << msg_text << "' отправлено." << endl;
+            if (message.empty()) {
+                cout << "Сообщение не может быть пустым!" << endl;
+                continue;
+            }
+            
+            int current_index = shared->write_index;
+            strncpy(shared->messages[current_index].text, message.c_str(), MAX_LEN);
+            shared->messages[current_index].text[MAX_LEN] = '\0';
+            shared->messages[current_index].is_valid = true;
+            
+            shared->write_index = (shared->write_index + 1) % shared->max_messages;
+            shared->count++;
+            
+            cout << "Сообщение отправлено: \"" << message << "\"" << endl;
+            cout << "В буфере: " << shared->count << "/" << shared->max_messages << " сообщений" << endl;
             
         } else if (cmd == "exit") {
-            cout << "Sender: Завершение работы." << endl;
+            cout << "Завершение работы Sender " << sender_id << endl;
             break;
-        } else {
-            cout << "Sender: Неизвестная команда." << endl;
+        } else if (!cmd.empty()) {
+            cout << " Неизвестная команда. Используйте 'send' или 'exit'" << endl;
         }
     }
     
-    munmap(shared, sizeof(SharedData));
-    close(fd);
+    cleanup();
+    
+    cout << "\n Нажмите Enter для закрытия окна...";
+    cin.get();
+    
     return 0;
 }
