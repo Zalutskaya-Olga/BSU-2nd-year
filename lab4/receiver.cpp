@@ -99,6 +99,7 @@ void print_status() {
     cout << "Индекс чтения: " << shared->read_index << endl;
     cout << "Индекс записи: " << shared->write_index << endl;
     cout << "Процессов Sender: " << shared->sender_count << endl;
+    cout << "Готово процессов: " << shared->ready_senders << "/" << shared->sender_count << endl;
     
     if (shared->count > 0) {
         cout << "\nСообщения в буфере:" << endl;
@@ -158,7 +159,7 @@ int main() {
     system("clear");
     print_header();
     
-    cout << "Введите имя файла: ";
+    cout << "Введите имя файла (по умолчанию buffer.bin): ";
     getline(cin, fname);
     if (fname.empty()) fname = "buffer.bin";
     
@@ -172,7 +173,7 @@ int main() {
     cin.ignore();
     
     int sender_count;
-    cout << "Количество процессов Sender: ";
+    cout << "Количество процессов Sender, которые будут подключены: ";
     while (!(cin >> sender_count) || sender_count < 1) {
         cout << "Ошибка! Введите число больше 0: ";
         cin.clear();
@@ -210,43 +211,39 @@ int main() {
         shared->messages[i].is_valid = false;
     }
     
-    char cwd[1024];
-    if (getcwd(cwd, sizeof(cwd)) == nullptr) {
-        cout << "Ошибка получения текущей директории!" << endl;
-        cleanup();
-        return 1;
-    }
+    cout << "\n=======================================" << endl;
+    cout << "          ИНСТРУКЦИЯ ДЛЯ ЗАПУСКА" << endl;
+    cout << "=======================================" << endl;
+    cout << "Файл буфера: " << fname << endl;
+    cout << "Размер буфера: " << max_messages << " сообщений" << endl;
+    cout << "Ожидаемое количество Sender процессов: " << sender_count << endl;
+    cout << "\nДля запуска Sender процессов:" << endl;
+    cout << "1. Откройте " << sender_count << " новых терминалов" << endl;
+    cout << "2. В каждом терминале выполните команду:" << endl;
+    cout << "   ./sender " << fname << endl;
+    cout << "3. Вернитесь в этот терминал" << endl;
+    cout << "=======================================" << endl;
     
-    cout << "Запуск " << sender_count << " процессов Sender..." << endl;
-    cout << "Откроются новые окна терминала. В каждом окне:" << endl;
-    cout << "   - Вводите команды 'send' для отправки сообщений" << endl;
-    cout << "   - Вводите 'exit' для завершения работы" << endl;
+    cout << "\nОжидание подключения " << sender_count << " Sender процессов..." << endl;
     
-    for (int i = 0; i < sender_count; i++) {
-        string command = "open -a Terminal ";
-        command += cwd;
-        command += "/sender ";
-        command += fname;
-        
-        cout << "Запуск Sender " << (i+1) << "..." << endl;
-        system(command.c_str());
-        
-        usleep(1000000); 
-    
-    cout << "\nОжидание готовности Sender процессов..." << endl;
     int last_ready = 0;
     while (shared->ready_senders < sender_count && !shared->shutdown) {
         if (shared->ready_senders != last_ready) {
-            cout << "Готово: " << shared->ready_senders << "/" << sender_count << " процессов" << endl;
+            cout << "Подключено: " << shared->ready_senders << "/" << sender_count << " процессов" << endl;
             last_ready = shared->ready_senders;
         }
         usleep(500000);
+        
+        if (shared->ready_senders > 0 && last_ready == 0) {
+            cout << "\nПервый Sender подключен! Система готова к работе." << endl;
+            cout << "Вы можете начать читать сообщения, даже если не все процессы подключены." << endl;
+        }
     }
     
     system("clear");
     print_header();
     cout << "Система запущена!" << endl;
-    cout << "Sender процессы запущены в отдельных окнах" << endl;
+    cout << "Подключено " << shared->ready_senders << "/" << sender_count << " Sender процессов" << endl;
     cout << "Используйте меню ниже для работы с сообщениями" << endl;
     
     string cmd;
