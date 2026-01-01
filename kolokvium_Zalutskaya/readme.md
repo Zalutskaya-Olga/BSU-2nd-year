@@ -1,16 +1,26 @@
-cd /Users/olga_zalutskaya/Documents/oc/kolokvium_Zalutskaya
+cd /Users/olga_zalutskaya/Documents/oc/kolokvium_Zalutskay
 python -m pytest tests/test_tasks.py -v
 
 
 
-
+в первом терминале 
 brew services start redis
-Проверьте, что Redis работает:
-redis-cli ping
-# Должен ответить: PONG
-python run.py
-Откройте в браузере:
+redis-cli CONFIG SET requirepass "kitty_password"
 
-http://localhost:8000 - главная страница
-http://localhost:8000/docs - документация API
-http://localhost:8000/health - проверка здоровья (должен показать Redis как "connected")
+в 2 терменале 
+docker-compose build --no-cache
+
+docker-compose up -d
+
+docker-compose ps
+
+docker-compose logs -f api
+
+docker-compose down
+
+
+
+
+
+ 🌐 Доступ к сервисам
+API и главная страница: http://localhost:8888
