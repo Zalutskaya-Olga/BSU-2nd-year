@@ -1,15 +1,15 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, Session
-from app.config import app_settings_instance
+from app.config import app_settings
 from contextlib import contextmanager
 import logging
 
 logger_instance = logging.getLogger(__name__)
 
 database_engine = create_engine(
-    app_settings_instance.database_url,
-    connect_args={"check_same_thread": False} if "sqlite" in app_settings_instance.database_url else {}
+    app_settings.database_url,
+    connect_args={"check_same_thread": False} if "sqlite" in app_settings.database_url else {}
 )
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=database_engine)
