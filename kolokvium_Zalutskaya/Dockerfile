@@ -1,12 +1,20 @@
-FROM python:3.11-slim
+FROM python:3.10-slim
 
 WORKDIR /app
 
+RUN apt-get update && apt-get install -y \
+    curl \
+    gcc \
+    && rm -rf /var/lib/apt/lists/*
+
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
+RUN mkdir -p /app/data /app/logs /app/static/css
+
 EXPOSE 8000
 
-CMD ["uvicorn", "app.main:app_instance", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["python", "run_kitty.py"]
