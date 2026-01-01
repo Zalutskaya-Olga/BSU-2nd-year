@@ -1,25 +1,46 @@
 from pydantic_settings import BaseSettings
-from typing import Optional
+from typing import Optional, List
+from enum import Enum
+
+
+class KittyTheme(str, Enum):
+    HELLO_KITTY = "hello_kitty"
+    MY_MELODY = "my_melody"
+    CINNAMOROLL = "cinnamoroll"
+    KUROMI = "kuromi"
 
 
 class AppSettings(BaseSettings):
-    app_name: str = "Todo List API"
+    app_name: str = "Kawaii Todo List 🎀"
     debug_mode: bool = True
-    api_version: str = "v1"
+    api_version: str = "v1.0.0"
 
-    database_url: str = "sqlite:///./todo.db"
+    cors_origins: List[str] = ["*"]
 
-    redis_host: str = "localhost"
+    theme: KittyTheme = KittyTheme.HELLO_KITTY
+    primary_color: str = "#FF69B4"
+    secondary_color: str = "#FFFFFF"
+    accent_color: str = "#FFB6C1"
+    ribbon_color: str = "#FF1493"
+
+    database_url: str = "sqlite:///./data/kitty_tasks.db"
+
+    redis_host: str = "redis"
     redis_port: int = 6379
     redis_db: int = 0
+    redis_password: Optional[str] = "kitty_password"
 
-    log_level: str = "INFO"
+    enable_kitty_sounds: bool = True
+    kitty_emoji: str = "🐱🎀🌸"
+    default_bow: str = "pink"
 
-    cors_origins: list = ["*"]
+    model_config = {
+        "env_file": ".env",
+        "env_file_encoding": "utf-8",
+        "case_sensitive": False,
+        "env_prefix": "",
+        "extra": "allow"
+    }
 
-    class Config:
-        env_file = ".env"
-        case_sensitive = True
 
-
-app_settings_instance = AppSettings()
+app_settings = AppSettings()
