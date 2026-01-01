@@ -1,6 +1,5 @@
 from sqlalchemy.orm import Session
 from app.models import TaskModel, TaskStatus
-from app.schemas import TaskCreateSchema, TaskUpdateSchema
 from typing import Optional, List
 import logging
 
@@ -10,12 +9,16 @@ logger_instance = logging.getLogger(__name__)
 class TaskCRUD:
 
     @staticmethod
-    def create_task(database_session: Session, task_data: TaskCreateSchema) -> TaskModel:
+    def create_task(database_session: Session, task_data: dict) -> TaskModel:
         try:
+            from app.schemas import TaskCreateSchema
+
+            validated_data = TaskCreateSchema(**task_data)
+
             db_task_instance = TaskModel(
-                title=task_data.title,
-                description=task_data.description,
-                status=TaskStatus(task_data.status.value)
+                title=validated_data.title,
+                description=validated_data.description,
+                status=TaskStatus(validated_data.status.value)
             )
             database_session.add(db_task_instance)
             database_session.commit()
@@ -47,10 +50,12 @@ class TaskCRUD:
     def update_task(
             database_session: Session,
             db_task_instance: TaskModel,
-            update_data: TaskUpdateSchema
+            update_data: dict
     ) -> TaskModel:
         try:
-            update_dict = update_data.model_dump(exclude_unset=True)
+            from app.schemas import TaskUpdateSchema
+
+            update_dict = update_data
 
             for field_name, field_value in update_dict.items():
                 if field_value is not None:
