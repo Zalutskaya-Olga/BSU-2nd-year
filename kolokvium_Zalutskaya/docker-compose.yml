@@ -3,41 +3,53 @@ version: '3.8'
 services:
   api:
     build: .
+    container_name: hello_kitty_api
     ports:
-      - "8000:8000"
+      - "8888:8000"
     environment:
-      - DATABASE_URL=sqlite:///./todo.db
+      - DATABASE_URL=sqlite:////app/data/kitty_tasks.db
+
       - REDIS_HOST=redis
       - REDIS_PORT=6379
-      - DEBUG_MODE=False
+      - REDIS_PASSWORD=kitty_password
+      - REDIS_DB=0
+
+      - DEBUG_MODE=True
+      - APP_THEME=hello_kitty
+      - PRIMARY_COLOR=#FF69B4
+      - SECONDARY_COLOR=#FFFFFF
+      - ACCENT_COLOR=#FFB6C1
     depends_on:
-      - redis
+      redis:
+        condition: service_healthy
     volumes:
-      - ./todo.db:/app/todo.db
-    command: uvicorn app.main:app_instance --host 0.0.0.0 --port 8000 --reload
+      - ./data:/app/data
+      - ./app/static:/app/static
+      - ./logs:/app/logs
+    command: sh -c "mkdir -p /app/data && python run_kitty.py"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    user: "1000:1000"
 
   redis:
     image: redis:7-alpine
+    container_name: hello_kitty_redis
     ports:
-      - "6379:6379"
+      - "6388:6379"
     volumes:
       - redis-data:/data
-
-  prometheus:
-    image: prom/prometheus
-    ports:
-      - "9090:9090"
-    volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
-
-  grafana:
-    image: grafana/grafana
-    ports:
-      - "3000:3000"
-    environment:
-      - GF_SECURITY_ADMIN_PASSWORD=admin
-    depends_on:
-      - prometheus
+    command: redis-server --appendonly yes --requirepass "kitty_password"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "kitty_password", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
 
 volumes:
   redis-data:
+    driver: local
