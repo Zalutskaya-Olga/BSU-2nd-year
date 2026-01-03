@@ -1,0 +1,303 @@
+:root {
+    --kitty-pink: #FF69B4;
+    --kitty-dark-pink: #FF1493;
+    --kitty-light-pink: #FFB6C1;
+    --kitty-white: #FFFFFF;
+    --kitty-bow: #FF1493;
+    --kitty-accent: #FFD700;
+}
+
+body.kitty-body {
+    font-family: 'Comic Sans MS', 'Marker Felt', 'Arial Rounded MT Bold', cursive, sans-serif;
+    background: linear-gradient(135deg, var(--kitty-light-pink), var(--kitty-pink)) !important;
+    margin: 0;
+    padding: 20px;
+    min-height: 100vh;
+}
+
+.kitty-container {
+    background: var(--kitty-white);
+    border-radius: 30px;
+    border: 5px solid var(--kitty-dark-pink);
+    box-shadow: 0 10px 30px rgba(255, 105, 180, 0.3);
+    padding: 30px;
+    margin: 20px auto;
+    max-width: 1200px;
+}
+
+.kitty-title {
+    color: var(--kitty-dark-pink) !important;
+    text-shadow: 3px 3px 0 var(--kitty-light-pink);
+    font-size: 48px;
+    text-align: center;
+    margin: 20px 0;
+    font-family: 'Comic Sans MS', cursive !important;
+}
+
+.kitty-subtitle {
+    color: var(--kitty-pink);
+    font-size: 24px;
+    margin: 15px 0;
+    font-family: 'Comic Sans MS', cursive;
+}
+
+.kitty-emoji {
+    font-size: 40px;
+    text-align: center;
+    margin: 20px 0;
+}
+
+.kitty-ribbon {
+    background: var(--kitty-dark-pink);
+    color: var(--kitty-white);
+    padding: 10px 20px;
+    border-radius: 15px;
+    display: inline-block;
+    margin: 10px;
+    font-weight: bold;
+    text-decoration: none;
+    font-family: 'Comic Sans MS', cursive;
+    transition: all 0.3s;
+}
+
+.kitty-ribbon:hover {
+    background: var(--kitty-pink);
+    transform: scale(1.05);
+    text-decoration: none;
+    color: white;
+}
+
+.kitty-button {
+    background: var(--kitty-pink);
+    color: var(--kitty-white);
+    border: 3px solid var(--kitty-dark-pink);
+    border-radius: 20px;
+    padding: 12px 24px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-family: 'Comic Sans MS', cursive;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.kitty-button:hover {
+    background: var(--kitty-dark-pink);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(255, 20, 147, 0.4);
+    text-decoration: none;
+    color: white;
+}
+
+.kitty-task-card {
+    background: linear-gradient(135deg, #FFF5F7, #FFE6EB);
+    border: 3px solid var(--kitty-light-pink);
+    border-radius: 20px;
+    padding: 20px;
+    margin: 15px 0;
+    transition: all 0.3s;
+}
+
+.kitty-task-card:hover {
+    border-color: var(--kitty-pink);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(255, 105, 180, 0.2);
+}
+
+.status-todo {
+    color: #FF6B6B;
+    font-weight: bold;
+}
+
+.status-in-progress {
+    color: #4ECDC4;
+    font-weight: bold;
+}
+
+.status-done {
+    color: #1DD1A1;
+    font-weight: bold;
+}
+
+.kitty-nav {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin: 30px 0;
+}
+
+.kitty-nav a {
+    background: var(--kitty-light-pink);
+    color: var(--kitty-dark-pink);
+    padding: 15px 30px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: bold;
+    border: 3px solid transparent;
+    transition: all 0.3s;
+    font-family: 'Comic Sans MS', cursive;
+}
+
+.kitty-nav a:hover {
+    background: var(--kitty-pink);
+    color: white;
+    border-color: var(--kitty-dark-pink);
+    text-decoration: none;
+}
+
+.kitty-input {
+    border: 3px solid var(--kitty-light-pink);
+    border-radius: 15px;
+    padding: 12px;
+    font-size: 16px;
+    width: 100%;
+    margin: 10px 0;
+    transition: all 0.3s;
+    font-family: 'Comic Sans MS', cursive;
+    box-sizing: border-box;
+}
+
+.kitty-input:focus {
+    border-color: var(--kitty-pink);
+    outline: none;
+    box-shadow: 0 0 10px rgba(255, 105, 180, 0.3);
+}
+
+.kitty-select {
+    border: 3px solid var(--kitty-light-pink);
+    border-radius: 15px;
+    padding: 12px;
+    font-size: 16px;
+    background: white;
+    cursor: pointer;
+    font-family: 'Comic Sans MS', cursive;
+    width: 100%;
+}
+
+.priority-star {
+    color: #FFD700;
+    font-size: 20px;
+    margin: 0 2px;
+}
+
+.kitty-message {
+    background: linear-gradient(135deg, #FFE6EB, #FFD1DC);
+    border: 3px solid var(--kitty-pink);
+    border-radius: 20px;
+    padding: 20px;
+    margin: 20px 0;
+    text-align: center;
+    font-family: 'Comic Sans MS', cursive;
+}
+
+.kitty-alert {
+    background: linear-gradient(135deg, #FFD1DC, #FFB6C1);
+    border: 3px solid #FF6B6B;
+    border-radius: 20px;
+    padding: 20px;
+    margin: 20px 0;
+    font-family: 'Comic Sans MS', cursive;
+}
+
+.kitty-footer {
+    text-align: center;
+    padding: 20px;
+    color: var(--kitty-dark-pink);
+    margin-top: 40px;
+    border-top: 3px dotted var(--kitty-light-pink);
+    font-family: 'Comic Sans MS', cursive;
+}
+
+.task-category {
+    display: inline-block;
+    background: linear-gradient(135deg, #FFF5F7, #FFE6EB);
+    color: #FF1493;
+    padding: 4px 12px;
+    border-radius: 15px;
+    font-size: 14px;
+    font-weight: bold;
+    border: 2px solid #FFB6C1;
+    margin-left: 10px;
+    font-family: 'Comic Sans MS', cursive;
+}
+
+.category-selector {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 10px 0;
+}
+
+.category-option {
+    flex: 1;
+    min-width: 120px;
+    text-align: center;
+    padding: 10px;
+    border: 2px solid #FFB6C1;
+    border-radius: 15px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.category-option:hover {
+    border-color: #FF69B4;
+    background: #FFF5F7;
+    transform: scale(1.05);
+}
+
+.category-option.selected {
+    background: #FF69B4;
+    color: white;
+    border-color: #FF1493;
+}
+
+.category-icon {
+    font-size: 24px;
+    display: block;
+    margin-bottom: 5px;
+}
+
+@media (max-width: 768px) {
+    body.kitty-body {
+        padding: 10px;
+    }
+
+    .kitty-container {
+        margin: 10px;
+        padding: 20px;
+        border-radius: 20px;
+    }
+
+    .kitty-title {
+        font-size: 36px;
+    }
+
+    .kitty-nav {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .kitty-nav a {
+        width: 100%;
+        text-align: center;
+        box-sizing: border-box;
+    }
+
+    .kitty-ribbon {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+        margin: 5px 0;
+    }
+
+    .category-selector {
+        flex-direction: column;
+    }
+
+    .category-option {
+        min-width: 100%;
+    }
+}

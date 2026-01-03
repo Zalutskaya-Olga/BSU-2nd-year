@@ -1,0 +1,155 @@
+.swagger-ui .topbar {
+    background: linear-gradient(135deg, #FF69B4, #FF1493) !important;
+}
+
+.swagger-ui .topbar .download-url-wrapper {
+    display: none;
+}
+
+.swagger-ui .info .title {
+    color: #FF1493 !important;
+    font-family: 'Comic Sans MS', cursive !important;
+}
+
+.swagger-ui .info .title:before {
+    content: '🐱 ';
+}
+
+.swagger-ui .info .title:after {
+    content: ' 🎀';
+}
+
+.swagger-ui .opblock-tag {
+    font-family: 'Comic Sans MS', cursive !important;
+    color: #FF69B4 !important;
+    border-color: #FFB6C1 !important;
+}
+
+.swagger-ui .opblock.opblock-get {
+    border-color: #FFB6C1 !important;
+    background: rgba(255, 182, 193, 0.1) !important;
+}
+
+.swagger-ui .opblock.opblock-post {
+    border-color: #FF69B4 !important;
+    background: rgba(255, 105, 180, 0.1) !important;
+}
+
+.swagger-ui .opblock.opblock-put {
+    border-color: #4ECDC4 !important;
+    background: rgba(78, 205, 196, 0.1) !important;
+}
+
+.swagger-ui .opblock.opblock-delete {
+    border-color: #FF6B6B !important;
+    background: rgba(255, 107, 107, 0.1) !important;
+}
+
+.swagger-ui .opblock .opblock-summary-method {
+    border-radius: 15px !important;
+    font-family: 'Comic Sans MS', cursive !important;
+}
+
+.swagger-ui .btn {
+    border-radius: 15px !important;
+    font-family: 'Comic Sans MS', cursive !important;
+}
+
+.swagger-ui .btn.execute {
+    background: linear-gradient(135deg, #FF69B4, #FF1493) !important;
+    border-color: #FF1493 !important;
+}
+
+.swagger-ui .btn.authorize {
+    background: linear-gradient(135deg, #4ECDC4, #1DD1A1) !important;
+    border-color: #1DD1A1 !important;
+    color: white !important;
+}
+
+.swagger-ui .try-out__btn {
+    background: #FFB6C1 !important;
+    color: #FF1493 !important;
+    border: 2px solid #FF1493 !important;
+}
+
+.swagger-ui input[type="text"],
+.swagger-ui textarea {
+    border: 2px solid #FFB6C1 !important;
+    border-radius: 10px !important;
+    padding: 8px !important;
+}
+
+.swagger-ui input[type="text"]:focus,
+.swagger-ui textarea:focus {
+    border-color: #FF69B4 !important;
+    box-shadow: 0 0 10px rgba(255, 105, 180, 0.3) !important;
+}
+
+.swagger-ui .model-title {
+    color: #FF1493 !important;
+}
+
+body.swagger-ui {
+    background: linear-gradient(135deg, #FFF5F7, #FFE6EB) !important;
+    font-family: 'Comic Sans MS', cursive, sans-serif !important;
+}
+
+.swagger-ui .topbar:before {
+    content: '🌸 🎀 🐱 🎀 🌸';
+    display: block;
+    text-align: center;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.swagger-ui .example .example__section {
+    background: #FFF5F7 !important;
+    border: 2px solid #FFB6C1 !important;
+    border-radius: 15px !important;
+}
+
+.swagger-ui .tab li {
+    border-radius: 10px 10px 0 0 !important;
+}
+
+.swagger-ui .tab li button.tablinks {
+    border-radius: 10px 10px 0 0 !important;
+}
+
+.swagger-ui .response-col_status {
+    font-weight: bold !important;
+}
+
+.swagger-ui .response-col_status[data-code="200"] {
+    color: #1DD1A1 !important;
+}
+
+.swagger-ui .response-col_status[data-code="201"] {
+    color: #4ECDC4 !important;
+}
+
+.swagger-ui .response-col_status[data-code="400"] {
+    color: #FF9F43 !important;
+}
+
+.swagger-ui .response-col_status[data-code="404"] {
+    color: #FF6B6B !important;
+}
+
+.swagger-ui ::-webkit-scrollbar {
+    width: 10px;
+}
+
+.swagger-ui ::-webkit-scrollbar-track {
+    background: #FFE6EB;
+    border-radius: 5px;
+}
+
+.swagger-ui ::-webkit-scrollbar-thumb {
+    background: #FFB6C1;
+    border-radius: 5px;
+}
+
+.swagger-ui ::-webkit-scrollbar-thumb:hover {
+    background: #FF69B4;
+}
