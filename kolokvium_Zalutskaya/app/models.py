@@ -1,22 +1,3 @@
-from sqlalchemy import Column, Integer, String, Enum, DateTime, func
-from app.database import BaseModel
-import enum
-from datetime import datetime
-
-
-class TaskStatus(enum.Enum):
-    TODO = "todo"
-    IN_PROGRESS = "in_progress"
-    DONE = "done"
-
-
-class KittyCategory(enum.Enum):
-    SCHOOL = "school"
-    HOME = "home"
-    WORK = "work"
-    FUN = "fun"
-    SHOPPING = "shopping"
-
 
 class TaskModel(BaseModel):
     __tablename__ = "kitty_tasks"
