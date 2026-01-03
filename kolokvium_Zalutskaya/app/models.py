@@ -1,3 +1,22 @@
+from sqlalchemy import Column, Integer, String, Enum, DateTime, func
+from app.database import BaseModel
+import enum
+from datetime import datetime
+
+
+class TaskStatus(enum.Enum):
+    TODO = "todo"
+    IN_PROGRESS = "in_progress"
+    DONE = "done"
+
+
+class KittyCategory(enum.Enum):
+    SCHOOL = "school"
+    HOME = "home"
+    WORK = "work"
+    FUN = "fun"
+    SHOPPING = "shopping"
+
 
 class TaskModel(BaseModel):
     __tablename__ = "kitty_tasks"
@@ -7,7 +26,7 @@ class TaskModel(BaseModel):
     description = Column(String(1000), nullable=True)
     status = Column(Enum(TaskStatus), default=TaskStatus.TODO, nullable=False)
     category = Column(Enum(KittyCategory), default=KittyCategory.FUN, nullable=False)
-    priority = Column(Integer, default=1, nullable=False)
+    priority = Column(Integer, default=3, nullable=False)
     created_at = Column(DateTime, default=func.now(), nullable=False)
     completed_at = Column(DateTime, nullable=True)
 
