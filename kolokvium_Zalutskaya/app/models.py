@@ -1,16 +1,25 @@
-from sqlalchemy import Column, Integer, String, Enum, DateTime, func
-from app.database import BaseModel
-import enum
-from datetime import datetime
+from pydantic import BaseModel, Field, ConfigDict, validator
+from typing import Optional, List
+from enum import Enum
+import random
 
 
-class TaskStatus(enum.Enum):
+class TaskStatusEnum(str, Enum):
     TODO = "todo"
     IN_PROGRESS = "in_progress"
     DONE = "done"
 
+    @property
+    def emoji(self):
+        emojis = {
+            "todo": "📝",
+            "in_progress": "🏃‍♀️",
+            "done": "✅"
+        }
+        return emojis.get(self.value, "🎀")
 
-class KittyCategory(enum.Enum):
+
+class KittyCategory(str, Enum):
     SCHOOL = "school"
     HOME = "home"
     WORK = "work"
@@ -18,61 +27,76 @@ class KittyCategory(enum.Enum):
     SHOPPING = "shopping"
 
 
-class TaskModel(BaseModel):
-    __tablename__ = "kitty_tasks"
+class TaskCreateSchema(BaseModel):
+    title: str = Field(..., min_length=1, max_length=255)
+    description: Optional[str] = Field(None, max_length=1000)
+    status: TaskStatusEnum = Field(default=TaskStatusEnum.TODO)
+    category: Optional[KittyCategory] = Field(default=KittyCategory.FUN)
+    priority: int = Field(default=1, ge=1, le=5)
 
-    id = Column(Integer, primary_key=True, index=True)
-    title = Column(String(255), nullable=False, index=True)
-    description = Column(String(1000), nullable=True)
-    status = Column(Enum(TaskStatus), default=TaskStatus.TODO, nullable=False)
-    category = Column(Enum(KittyCategory), default=KittyCategory.FUN, nullable=False)
-    priority = Column(Integer, default=3, nullable=False)
-    created_at = Column(DateTime, default=func.now(), nullable=False)
-    completed_at = Column(DateTime, nullable=True)
+    @validator('title')
+    def add_kitty_charm(cls, v):
+        kitty_suffixes = [" 🎀", " 🐱", " 🌸", " ❤️", " ✨"]
+        if not any(suffix in v for suffix in kitty_suffixes):
+            v += random.choice(kitty_suffixes)
+        return v
 
-    def to_dict(self):
-        return {
-            "id": self.id,
-            "title": self.title,
-            "description": self.description,
-            "status": self.status.value,
-            "status_emoji": self.get_status_emoji(),
-            "category": self.category.value,
-            "category_emoji": self.get_category_emoji(),
-            "priority": self.priority,
-            "priority_stars": "⭐" * min(self.priority, 5),
-            "created_at": self.created_at.isoformat() if self.created_at else None,
-            "completed_at": self.completed_at.isoformat() if self.completed_at else None,
-            "kitty_style": {
-                "ribbon": self.get_ribbon_color(),
-                "theme": "hello_kitty"
-            }
+    model_config = ConfigDict(json_schema_extra={
+        "example": {
+            "title": "Купить молоко для печенья 🎀",
+            "description": "Обязательно с розовой упаковкой! 🌸",
+            "status": "todo",
+            "category": "shopping",
+            "priority": 3
         }
+    })
 
-    def get_status_emoji(self):
-        emojis = {
-            TaskStatus.TODO: "📝",
-            TaskStatus.IN_PROGRESS: "🏃‍♀️",
-            TaskStatus.DONE: "✅🎀"
-        }
-        return emojis.get(self.status, "🎀")
 
-    def get_category_emoji(self):
-        emojis = {
-            KittyCategory.SCHOOL: "📚",
-            KittyCategory.HOME: "🏠",
-            KittyCategory.WORK: "💼",
-            KittyCategory.FUN: "🎮",
-            KittyCategory.SHOPPING: "🛍️"
-        }
-        return emojis.get(self.category, "🐱")
+class TaskUpdateSchema(BaseModel):
+    title: Optional[str] = Field(None, min_length=1, max_length=255)
+    description: Optional[str] = Field(None, max_length=1000)
+    status: Optional[TaskStatusEnum] = Field(None)
+    category: Optional[KittyCategory] = Field(None)
+    priority: Optional[int] = Field(None, ge=1, le=5)
 
-    def get_ribbon_color(self):
-        colors = {
-            1: "#FFB6C1",
-            2: "#FF69B4",
-            3: "#FF1493",
-            4: "#DB7093",
-            5: "#C71585"
+    model_config = ConfigDict(json_schema_extra={
+        "example": {
+            "status": "done",
+            "priority": 5,
+            "category": "fun"
         }
-        return colors.get(self.priority, "#FF69B4")
+    })
+
+
+class TaskResponseSchema(BaseModel):
+    id: int
+    title: str
+    description: Optional[str]
+    status: TaskStatusEnum
+    category: KittyCategory
+    priority: int  # Добавить это поле!
+    created_at: Optional[str] = None
+    completed_at: Optional[str] = None
+
+    @classmethod
+    def from_orm(cls, obj):
+        data = {
+            "id": obj.id,
+            "title": obj.title,
+            "description": obj.description,
+            "status": obj.status.value if hasattr(obj.status, 'value') else obj.status,
+            "category": obj.category.value if hasattr(obj.category, 'value') else obj.category,
+            "priority": obj.priority,  # Добавить приоритет!
+            "created_at": obj.created_at.isoformat() if obj.created_at else None,
+            "completed_at": obj.completed_at.isoformat() if obj.completed_at else None
+        }
+        return cls(**data)
+
+class TasksListResponseSchema(BaseModel):
+    emoji: str = "🐱🎀🌸"
+    theme: str
+    tasks: List[TaskResponseSchema]
+    total: int
+    message: str = "Вот твои кавайные задачи!"
+
+    model_config = ConfigDict(from_attributes=True)
