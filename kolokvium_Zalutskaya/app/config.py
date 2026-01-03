@@ -1,46 +1,105 @@
-from pydantic_settings import BaseSettings
+from sqlalchemy.orm import Session
+from app.models import TaskModel, TaskStatus, KittyCategory
 from typing import Optional, List
-from enum import Enum
+import logging
+
+logger_instance = logging.getLogger(__name__)
 
 
-class KittyTheme(str, Enum):
-    HELLO_KITTY = "hello_kitty"
-    MY_MELODY = "my_melody"
-    CINNAMOROLL = "cinnamoroll"
-    KUROMI = "kuromi"
+class TaskCRUD:
+
+    @staticmethod
+    def create_task(database_session: Session, task_data: dict) -> TaskModel:
+        try:
+            from app.schemas import TaskCreateSchema
+
+            validated_data = TaskCreateSchema(**task_data)
+
+            db_task_instance = TaskModel(
+                title=validated_data.title,
+                description=validated_data.description,
+                status=TaskStatus(validated_data.status.value),
+                category=KittyCategory(validated_data.category.value if validated_data.category else KittyCategory.FUN.value),
+                priority=getattr(validated_data, 'priority', 3)
+            )
+            database_session.add(db_task_instance)
+            database_session.commit()
+            database_session.refresh(db_task_instance)
+            logger_instance.info(f"Создана задача с ID: {db_task_instance.id}")
+            return db_task_instance
+        except Exception as error:
+            database_session.rollback()
+            logger_instance.error(f"Ошибка создания задачи: {error}")
+            raise
+
+    @staticmethod
+    def get_task_by_id(database_session: Session, task_id: int) -> Optional[TaskModel]:
+        try:
+            return database_session.query(TaskModel).filter(TaskModel.id == task_id).first()
+        except Exception as error:
+            logger_instance.error(f"Ошибка получения задачи {task_id}: {error}")
+            raise
+
+    @staticmethod
+    def get_all_tasks(database_session: Session, skip: int = 0, limit: int = 100) -> List[TaskModel]:
+        try:
+            return database_session.query(TaskModel).offset(skip).limit(limit).all()
+        except Exception as error:
+            logger_instance.error(f"Ошибка получения списка задач: {error}")
+            raise
+
+    @staticmethod
+    def update_task(
+            database_session: Session,
+            db_task_instance: TaskModel,
+            update_data: dict
+    ) -> TaskModel:
+        try:
+            from app.schemas import TaskUpdateSchema
+
+            update_dict = update_data
+
+            for field_name, field_value in update_dict.items():
+                if field_value is not None:
+                    if field_name == "status":
+                        setattr(db_task_instance, field_name, TaskStatus(field_value))
+                    elif field_name == "category":
+                        setattr(db_task_instance, field_name, KittyCategory(field_value))
+                    else:
+                        setattr(db_task_instance, field_name, field_value)
+
+            database_session.commit()
+            database_session.refresh(db_task_instance)
+            logger_instance.info(f"Обновлена задача с ID: {db_task_instance.id}")
+            return db_task_instance
+        except Exception as error:
+            database_session.rollback()
+            logger_instance.error(f"Ошибка обновления задачи: {error}")
+            raise
+
+    @staticmethod
+    def delete_task(database_session: Session, task_id: int) -> bool:
+        try:
+            db_task_instance = database_session.query(TaskModel).filter(TaskModel.id == task_id).first()
+            if not db_task_instance:
+                return False
+
+            database_session.delete(db_task_instance)
+            database_session.commit()
+            logger_instance.info(f"Удалена задача с ID: {task_id}")
+            return True
+        except Exception as error:
+            database_session.rollback()
+            logger_instance.error(f"Ошибка удаления задачи {task_id}: {error}")
+            raise
+
+    @staticmethod
+    def count_tasks(database_session: Session) -> int:
+        try:
+            return database_session.query(TaskModel).count()
+        except Exception as error:
+            logger_instance.error(f"Ошибка подсчета задач: {error}")
+            raise
 
 
-class AppSettings(BaseSettings):
-    app_name: str = "Kawaii Todo List 🎀"
-    debug_mode: bool = True
-    api_version: str = "v1.0.0"
-
-    cors_origins: List[str] = ["*"]
-
-    theme: KittyTheme = KittyTheme.HELLO_KITTY
-    primary_color: str = "#FF69B4"
-    secondary_color: str = "#FFFFFF"
-    accent_color: str = "#FFB6C1"
-    ribbon_color: str = "#FF1493"
-
-    database_url: str = "sqlite:///./data/kitty_tasks.db"
-
-    redis_host: str = "redis"
-    redis_port: int = 6379
-    redis_db: int = 0
-    redis_password: Optional[str] = "kitty_password"
-
-    enable_kitty_sounds: bool = True
-    kitty_emoji: str = "🐱🎀🌸"
-    default_bow: str = "pink"
-
-    model_config = {
-        "env_file": ".env",
-        "env_file_encoding": "utf-8",
-        "case_sensitive": False,
-        "env_prefix": "",
-        "extra": "allow"
-    }
-
-
-app_settings = AppSettings()
+task_crud_instance = TaskCRUD()
