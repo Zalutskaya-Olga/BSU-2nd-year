@@ -18,7 +18,8 @@ class TaskCRUD:
             db_task_instance = TaskModel(
                 title=validated_data.title,
                 description=validated_data.description,
-                status=TaskStatus(validated_data.status.value)
+                status=TaskStatus(validated_data.status.value),
+                priority=getattr(validated_data, 'priority', 3)
             )
             database_session.add(db_task_instance)
             database_session.commit()
