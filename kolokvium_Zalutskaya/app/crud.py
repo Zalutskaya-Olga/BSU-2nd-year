@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from app.models import TaskModel, TaskStatus
+from app.models import TaskModel, TaskStatus, KittyCategory
 from typing import Optional, List
 import logging
 
@@ -19,6 +19,7 @@ class TaskCRUD:
                 title=validated_data.title,
                 description=validated_data.description,
                 status=TaskStatus(validated_data.status.value),
+                category=KittyCategory(validated_data.category.value if validated_data.category else KittyCategory.FUN.value),
                 priority=getattr(validated_data, 'priority', 3)
             )
             database_session.add(db_task_instance)
@@ -62,6 +63,8 @@ class TaskCRUD:
                 if field_value is not None:
                     if field_name == "status":
                         setattr(db_task_instance, field_name, TaskStatus(field_value))
+                    elif field_name == "category":
+                        setattr(db_task_instance, field_name, KittyCategory(field_value))
                     else:
                         setattr(db_task_instance, field_name, field_value)
 
