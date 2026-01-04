@@ -1,34 +1,28 @@
-#!/usr/bin/env python3
 import uvicorn
 import os
 import sys
-from pathlib import Path
 
-# Hello Kitty ASCII art
-HELLO_KITTY_ART = """
-🌸🎀🌸🎀🌸🎀🌸🎀🌸🎀🌸🎀🌸🎀🌸
-   🐱 Hello Kitty Todo API 🎀
-🌸🎀🌸🎀🌸🎀🌸🎀🌸🎀🌸🎀🌸🎀🌸
-"""
+print("🌸🎀 Hello Kitty Todo API 🎀🌸")
 
-if __name__ == "__main__":
-    print(HELLO_KITTY_ART)
-    print("🚀 Запуск Kawaii Todo List...")
-    print("🎀 Главная страница: http://localhost:8000")
-    print("📚 Документация: http://localhost:8000/docs")
-    print("❤️  Здоровье: http://localhost:8000/health")
-    print("🌸 Наслаждайтесь кавайностью!")
-    print("-" * 40)
+print("\nПроверка файлов:")
+print(f"/app/app/main.py: {os.path.exists('/app/app/main.py')}")
 
-    # Проверяем и создаем необходимые директории
-    Path("./data").mkdir(exist_ok=True)
-    Path("./logs").mkdir(exist_ok=True)
-    Path("./app/static/css").mkdir(exist_ok=True, parents=True)
+try:
+    sys.path.insert(0, '/app')
+
+    from app.main import app_instance
+
+    print("✅ Приложение импортировано успешно!")
 
     uvicorn.run(
-        "app.main:app_instance",
+        app=app_instance,
         host="0.0.0.0",
         port=8000,
-        reload=True,
-        log_level="info"
+        reload=False
     )
+except Exception as e:
+    print(f"❌ Ошибка: {e}")
+    import traceback
+
+    traceback.print_exc()
+    exit(1)
