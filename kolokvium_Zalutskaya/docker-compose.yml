@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   api:
     build: .
@@ -8,12 +6,10 @@ services:
       - "8888:8000"
     environment:
       - DATABASE_URL=sqlite:////app/data/kitty_tasks.db
-
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - REDIS_PASSWORD=kitty_password
       - REDIS_DB=0
-
       - DEBUG_MODE=True
       - APP_THEME=hello_kitty
       - PRIMARY_COLOR=#FF69B4
@@ -24,24 +20,20 @@ services:
         condition: service_healthy
     volumes:
       - ./data:/app/data
-      - ./app/static:/app/static
       - ./logs:/app/logs
     command: sh -c "mkdir -p /app/data && python run_kitty.py"
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      test: ["CMD-SHELL", "curl -f http://localhost:8000/health || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 3
-    user: "1000:1000"
 
   redis:
     image: redis:7-alpine
     container_name: hello_kitty_redis
     ports:
       - "6388:6379"
-    volumes:
-      - redis-data:/data
     command: redis-server --appendonly yes --requirepass "kitty_password"
     restart: unless-stopped
     healthcheck:
@@ -49,7 +41,10 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
+    volumes:
+      - redis-data:/data
 
 volumes:
   redis-data:
     driver: local
+
