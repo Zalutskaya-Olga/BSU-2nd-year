@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐱 Hello Kitty Todo List 🎀</title>
+    <link rel="stylesheet" href="/static/css/kitty-theme.css">
+    <style>
+        .hero-section {
+            text-align: center;
+            padding: 80px 20px;
+            background: linear-gradient(135deg, #FFB6C1, #FF69B4);
+            border-radius: 30px;
+            margin: 40px 0;
+            color: white;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .main-button {
+            display: inline-block;
+            background: white;
+            color: #FF1493;
+            font-size: 28px;
+            padding: 20px 50px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 30px;
+            border: 5px solid #FF1493;
+            box-shadow: 0 10px 30px rgba(255, 20, 147, 0.3);
+            transition: all 0.3s;
+            font-family: 'Comic Sans MS', cursive;
+        }
+
+        .main-button:hover {
+            transform: scale(1.1);
+            background: #FF1493;
+            color: white;
+            text-decoration: none;
+        }
+
+        .small-links {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px dotted #FFB6C1;
+        }
+
+        .small-links a {
+            color: #FF69B4;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .small-links a:hover {
+            color: #FF1493;
+            text-decoration: underline;
+        }
+
+        .kitty-emoji-large {
+            font-size: 60px;
+            margin: 20px 0;
+        }
+
+        .welcome-text {
+            font-size: 24px;
+            margin-bottom: 30px;
+            max-width: 600px;
+        }
+    </style>
+</head>
+<body class="kitty-body">
+    <div class="kitty-container">
+        <h1 class="kitty-title">🐱 Hello Kitty Todo List 🎀</h1>
+
+        <div class="kitty-emoji-large" style="text-align: center;">🌸🎀🐱🎀🌸</div>
+
+        <div class="hero-section">
+            <div class="welcome-text">
+                Добро пожаловать в самый кавайный менеджер задач!
+            </div>
+
+            <a href="/kitty/tasks-ui" class="main-button">
+                📝 Мои задачи 🎀
+            </a>
+        </div>
+
+        <div class="small-links">
+            <a href="/docs">📚 Полная документация</a>
+            |
+            <a href="/health">❤️ Мониторинг</a>
+        </div>
+
+        <div class="kitty-footer">
+            <p>🌸 Сделано с любовью Hello Kitty 🎀</p>
+            <p>Версия 1.0.0 • Все права защищены бантиками 🐱</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const button = document.querySelector('.main-button');
+
+            setInterval(() => {
+                button.style.transform = button.style.transform === 'scale(1.05)' ? 'scale(1)' : 'scale(1.05)';
+            }, 2000);
+        });
+    </script>
+</body>
+</html>

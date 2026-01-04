@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📝 Hello Kitty Tasks 🎀</title>
+    <link rel="stylesheet" href="/static/css/kitty-theme.css">
+    <style>
+        .tasks-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .task-form {
+            background: linear-gradient(135deg, #FFF5F7, #FFE6EB);
+            border-radius: 25px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 3px solid #FFB6C1;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #FF1493;
+            font-weight: bold;
+        }
+
+        .task-list {
+            margin-top: 30px;
+        }
+
+        .task-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            margin: 15px 0;
+            background: white;
+            border-radius: 20px;
+            border: 3px solid #FFB6C1;
+            transition: all 0.3s;
+        }
+
+        .task-item:hover {
+            border-color: #FF69B4;
+            transform: translateX(10px);
+        }
+
+        .task-info {
+            flex: 1;
+        }
+
+        .task-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .task-status {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 14px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .status-todo { background: #FFE6EB; color: #FF6B6B; }
+        .status-in-progress { background: #E6F7F6; color: #4ECDC4; }
+        .status-done { background: #E6F7EF; color: #1DD1A1; }
+
+        .priority-stars {
+            display: inline-block;
+            margin-left: 10px;
+            font-size: 18px;
+        }
+
+        .priority-star {
+            color: #FFD700;
+        }
+
+        .priority-star-empty {
+            color: #FFB6C1;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            font-size: 20px;
+            color: #FF69B4;
+        }
+
+        .error-message {
+            background: linear-gradient(135deg, #FFD1DC, #FFB6C1);
+            border: 3px solid #FF6B6B;
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .priority-slider {
+            width: 100%;
+            margin: 10px 0;
+        }
+
+        .stars-display {
+            font-size: 24px;
+            text-align: center;
+            margin: 10px 0;
+            min-height: 30px;
+        }
+
+        .task-category {
+            display: inline-block;
+            background: linear-gradient(135deg, #FFF5F7, #FFE6EB);
+            color: #FF1493;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 14px;
+            font-weight: bold;
+            border: 2px solid #FFB6C1;
+            margin-left: 10px;
+            font-family: 'Comic Sans MS', cursive;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="kitty-body">
+    <div class="kitty-container">
+        <h1 class="kitty-title">📝 Мои задачи 🎀</h1>
+        <div class="kitty-emoji">🐱📝🌸</div>
+
+        <nav class="kitty-nav">
+            <a href="/">🏠 На главную</a>
+            <a href="/docs">📚 API Документация</a>
+            <a href="/health">❤️ Здоровье</a>
+        </nav>
+
+        <div class="task-form">
+            <h2 class="kitty-subtitle">✨ Создать новую задачу</h2>
+            <div class="form-group">
+                <label for="taskTitle">Название задачи:</label>
+                <input type="text" id="taskTitle" class="kitty-input" placeholder="Что нужно сделать? 🎀">
+            </div>
+
+            <div class="form-group">
+                <label for="taskDescription">Описание:</label>
+                <textarea id="taskDescription" class="kitty-input" rows="3" placeholder="Подробности... 🌸"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="taskStatus">Статус:</label>
+                <select id="taskStatus" class="kitty-select">
+                    <option value="todo">📝 Сделать</option>
+                    <option value="in_progress">🏃‍♀️ В процессе</option>
+                    <option value="done">✅ Выполнено</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="taskCategory">Категория:</label>
+                <select id="taskCategory" class="kitty-select">
+                    <option value="school">📚 Учеба</option>
+                    <option value="home">🏠 Дом</option>
+                    <option value="work">💼 Работа</option>
+                    <option value="fun" selected>🎮 Развлечения</option>
+                    <option value="shopping">🛍️ Покупки</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="taskPriority">Приоритет (1-5):</label>
+                <input type="range" id="taskPriority" min="1" max="5" value="3" class="priority-slider">
+                <div id="priorityStars" class="stars-display">
+                    ⭐⭐⭐⭐⭐
+                </div>
+            </div>
+
+            <button onclick="createTask()" class="kitty-button">🎀 Создать задачу</button>
+        </div>
+
+        <div class="tasks-container">
+            <h2 class="kitty-subtitle">🌸 Мои задачи</h2>
+            <div id="taskList" class="task-list">
+                <div class="loading">
+                    <p>Загрузка задач... 🐱</p>
+                    <div class="kitty-emoji">⏳</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const categoryEmojis = {
+            'school': '📚',
+            'home': '🏠',
+            'work': '💼',
+            'fun': '🎮',
+            'shopping': '🛍️'
+        };
+
+        const categoryNames = {
+            'school': 'Учеба',
+            'home': 'Дом',
+            'work': 'Работа',
+            'fun': 'Развлечения',
+            'shopping': 'Покупки'
+        };
+
+        function renderStars(priority) {
+            priority = Math.min(5, Math.max(1, parseInt(priority) || 3));
+            let stars = '';
+            for (let i = 1; i <= 5; i++) {
+                if (i <= priority) {
+                    stars += '⭐';
+                } else {
+                    stars += '☆';
+                }
+            }
+            return stars;
+        }
+
+        document.getElementById('taskPriority').addEventListener('input', function() {
+            const value = parseInt(this.value);
+            document.getElementById('priorityStars').textContent = renderStars(value);
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const prioritySlider = document.getElementById('taskPriority');
+            const priorityStars = document.getElementById('priorityStars');
+            priorityStars.textContent = renderStars(prioritySlider.value);
+        });
+
+        async function loadTasks() {
+            try {
+                const response = await fetch('/tasks');
+                if (!response.ok) throw new Error('Ошибка сервера');
+
+                const data = await response.json();
+                const taskList = document.getElementById('taskList');
+
+                if (!data.tasks || data.tasks.length === 0) {
+                    taskList.innerHTML = `
+                        <div class="kitty-message">
+                            <p>У вас пока нет задач! 🎀</p>
+                            <p>Создайте первую задачу выше! ✨</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                taskList.innerHTML = '';
+
+                data.tasks.forEach(task => {
+                    const taskItem = document.createElement('div');
+                    taskItem.className = 'task-item';
+
+                    const statusClass = {
+                        'todo': 'status-todo',
+                        'in_progress': 'status-in-progress',
+                        'done': 'status-done'
+                    }[task.status] || 'status-todo';
+
+                    const statusText = {
+                        'todo': '📝 Сделать',
+                        'in_progress': '🏃‍♀️ В процессе',
+                        'done': '✅ Выполнено'
+                    }[task.status] || '📝 Сделать';
+
+                    const starsHTML = renderStars(task.priority || 3);
+                    const categoryEmoji = categoryEmojis[task.category] || '🐱';
+                    const categoryName = categoryNames[task.category] || 'Без категории';
+
+                    taskItem.innerHTML = `
+                        <div class="task-info">
+                            <h3 style="margin: 0;">${task.title || 'Без названия'}</h3>
+                            <p style="margin: 5px 0; color: #666;">${task.description || 'Без описания'}</p>
+                            <div>
+                                <span class="task-status ${statusClass}">${statusText}</span>
+                                <span class="priority-stars">${starsHTML}</span>
+                                <span class="task-category">${categoryEmoji} ${categoryName}</span>
+                            </div>
+                        </div>
+                        <div class="task-actions">
+                            <button onclick="updateTask(${task.id}, 'in_progress')" class="kitty-button" style="padding: 8px 16px;">🏃‍♀️</button>
+                            <button onclick="updateTask(${task.id}, 'done')" class="kitty-button" style="padding: 8px 16px;">✅</button>
+                            <button onclick="deleteTask(${task.id})" class="kitty-button" style="padding: 8px 16px; background: #FF6B6B;">🗑️</button>
+                        </div>
+                    `;
+
+                    taskList.appendChild(taskItem);
+                });
+
+            } catch (error) {
+                console.error('Ошибка загрузки задач:', error);
+                document.getElementById('taskList').innerHTML = `
+                    <div class="error-message">
+                        <p>😿 Не удалось загрузить задачи</p>
+                        <p>Проверьте подключение к серверу</p>
+                        <button onclick="loadTasks()" class="kitty-button" style="margin-top: 10px;">Повторить</button>
+                    </div>
+                `;
+            }
+        }
+
+        async function createTask() {
+            const title = document.getElementById('taskTitle').value.trim();
+            const description = document.getElementById('taskDescription').value.trim();
+            const status = document.getElementById('taskStatus').value;
+            const category = document.getElementById('taskCategory').value;
+            const priority = parseInt(document.getElementById('taskPriority').value);
+
+            if (!title) {
+                alert('🎀 Введите название задачи!');
+                return;
+            }
+
+            try {
+                const response = await fetch('/tasks', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        title: title,
+                        description: description,
+                        status: status,
+                        category: category,
+                        priority: priority
+                    })
+                });
+
+                if (response.ok) {
+                    document.getElementById('taskTitle').value = '';
+                    document.getElementById('taskDescription').value = '';
+                    document.getElementById('taskPriority').value = 3;
+                    document.getElementById('priorityStars').textContent = renderStars(3);
+
+                    alert('✨ Задача создана!');
+                    loadTasks();
+                } else {
+                    const error = await response.json();
+                    alert('😿 Ошибка: ' + (error.detail || 'Не удалось создать задачу'));
+                }
+            } catch (error) {
+                console.error('Ошибка:', error);
+                alert('💔 Не удалось создать задачу');
+            }
+        }
+
+        async function updateTask(taskId, newStatus) {
+            try {
+                const response = await fetch(`/tasks/${taskId}`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status: newStatus })
+                });
+
+                if (response.ok) {
+                    alert('✅ Задача обновлена!');
+                    loadTasks();
+                }
+            } catch (error) {
+                console.error('Ошибка:', error);
+                alert('😿 Не удалось обновить задачу');
+            }
+        }
+
+        async function deleteTask(taskId) {
+            if (!confirm('🎀 Удалить задачу?')) return;
+
+            try {
+                const response = await fetch(`/tasks/${taskId}`, {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    alert('🗑️ Задача удалена!');
+                    loadTasks();
+                }
+            } catch (error) {
+                console.error('Ошибка:', error);
+                alert('😿 Не удалось удалить задачу');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadTasks);
+
+        setInterval(loadTasks, 30000);
+    </script>
+</body>
+</html>
