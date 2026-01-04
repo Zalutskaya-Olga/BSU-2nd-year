@@ -6,155 +6,429 @@
     <title>📝 Hello Kitty Tasks 🎀</title>
     <link rel="stylesheet" href="/static/css/kitty-theme.css">
     <style>
-        .tasks-container {
-            max-width: 800px;
-            margin: 0 auto;
+        body.kitty-body {
+            padding: 20px;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #FFB6C1, #FF69B4) !important;
         }
 
-        .task-form {
+        .tasks-page-container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 35px;
+            border: 6px solid #FF1493;
+            box-shadow: 0 20px 50px rgba(255, 20, 147, 0.25);
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .kitty-title {
+            color: #FF1493 !important;
+            text-shadow: 3px 3px 0 #FFB6C1;
+            font-size: 48px;
+            margin: 20px 0;
+        }
+
+        .kitty-subtitle {
+            color: #FF69B4;
+            font-size: 28px;
+            margin: 15px 0;
+        }
+
+        .task-form-section {
             background: linear-gradient(135deg, #FFF5F7, #FFE6EB);
             border-radius: 25px;
-            padding: 30px;
-            margin-bottom: 30px;
-            border: 3px solid #FFB6C1;
+            padding: 35px;
+            margin-bottom: 40px;
+            border: 4px solid #FFB6C1;
+            box-shadow: 0 10px 30px rgba(255, 182, 193, 0.2);
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
             color: #FF1493;
             font-weight: bold;
+            font-size: 18px;
+            font-family: 'Comic Sans MS', cursive;
         }
 
-        .task-list {
-            margin-top: 30px;
+        .kitty-input, .kitty-select {
+            width: 100%;
+            padding: 16px;
+            font-size: 16px;
+            border: 3px solid #FFB6C1;
+            border-radius: 18px;
+            box-sizing: border-box;
+            font-family: 'Comic Sans MS', cursive;
+        }
+
+        .kitty-input:focus, .kitty-select:focus {
+            border-color: #FF69B4;
+            outline: none;
+            box-shadow: 0 0 15px rgba(255, 105, 180, 0.3);
+        }
+
+        textarea.kitty-input {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .priority-control {
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-radius: 20px;
+            border: 3px solid #FFB6C1;
+            margin: 20px 0;
+        }
+
+        .priority-slider {
+            width: 100%;
+            height: 12px;
+            -webkit-appearance: none;
+            background: #FFB6C1;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .priority-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 30px;
+            height: 30px;
+            background: #FF1493;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 3px solid white;
+            box-shadow: 0 0 10px rgba(255, 20, 147, 0.5);
+        }
+
+        .stars-display {
+            font-size: 28px;
+            margin: 15px 0;
+            min-height: 35px;
+            letter-spacing: 5px;
+        }
+
+        .create-task-btn {
+            display: block;
+            width: 100%;
+            padding: 20px;
+            font-size: 22px;
+            background: linear-gradient(135deg, #FF69B4, #FF1493);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            font-family: 'Comic Sans MS', cursive;
+            margin-top: 20px;
+            border: 4px solid white;
+            box-shadow: 0 10px 25px rgba(255, 20, 147, 0.3);
+            transition: all 0.3s;
+        }
+
+        .create-task-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(255, 20, 147, 0.4);
+        }
+
+        .tasks-list-section {
+            margin-top: 40px;
         }
 
         .task-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px;
-            margin: 15px 0;
+            padding: 25px;
+            margin: 20px 0;
             background: white;
-            border-radius: 20px;
-            border: 3px solid #FFB6C1;
+            border-radius: 25px;
+            border: 4px solid #FFB6C1;
             transition: all 0.3s;
+            box-shadow: 0 8px 25px rgba(255, 182, 193, 0.15);
         }
 
         .task-item:hover {
             border-color: #FF69B4;
             transform: translateX(10px);
+            box-shadow: 0 15px 35px rgba(255, 105, 180, 0.25);
         }
 
         .task-info {
             flex: 1;
+            padding-right: 25px;
         }
 
-        .task-actions {
+        .task-title {
+            margin: 0 0 12px 0;
+            color: #FF1493;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .task-description {
+            margin: 0 0 20px 0;
+            color: #666;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        .task-meta {
             display: flex;
-            gap: 10px;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
         }
 
         .task-status {
             display: inline-block;
-            padding: 5px 15px;
-            border-radius: 15px;
-            font-size: 14px;
+            padding: 10px 22px;
+            border-radius: 20px;
+            font-size: 16px;
             font-weight: bold;
-            margin-left: 10px;
+            margin-right: 10px;
+            font-family: 'Comic Sans MS', cursive;
         }
 
-        .status-todo { background: #FFE6EB; color: #FF6B6B; }
-        .status-in-progress { background: #E6F7F6; color: #4ECDC4; }
-        .status-done { background: #E6F7EF; color: #1DD1A1; }
+        .status-todo {
+            background: linear-gradient(135deg, #FFE6EB, #FFD1DC);
+            color: #FF6B6B;
+            border: 2px solid #FF6B6B;
+        }
+
+        .status-in-progress {
+            background: linear-gradient(135deg, #E6F7F6, #D1F0E6);
+            color: #4ECDC4;
+            border: 2px solid #4ECDC4;
+        }
+
+        .status-done {
+            background: linear-gradient(135deg, #E6F7EF, #D1F0E6);
+            color: #1DD1A1;
+            border: 2px solid #1DD1A1;
+        }
 
         .priority-stars {
-            display: inline-block;
-            margin-left: 10px;
-            font-size: 18px;
-        }
-
-        .priority-star {
-            color: #FFD700;
-        }
-
-        .priority-star-empty {
-            color: #FFB6C1;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 40px;
-            font-size: 20px;
-            color: #FF69B4;
-        }
-
-        .error-message {
-            background: linear-gradient(135deg, #FFD1DC, #FFB6C1);
-            border: 3px solid #FF6B6B;
-            border-radius: 20px;
-            padding: 20px;
-            text-align: center;
-            margin: 20px 0;
-        }
-
-        .priority-slider {
-            width: 100%;
-            margin: 10px 0;
-        }
-
-        .stars-display {
             font-size: 24px;
-            text-align: center;
-            margin: 10px 0;
-            min-height: 30px;
+            letter-spacing: 3px;
+            color: #FFD700;
         }
 
         .task-category {
             display: inline-block;
             background: linear-gradient(135deg, #FFF5F7, #FFE6EB);
             color: #FF1493;
-            padding: 4px 12px;
-            border-radius: 15px;
-            font-size: 14px;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 16px;
             font-weight: bold;
             border: 2px solid #FFB6C1;
-            margin-left: 10px;
             font-family: 'Comic Sans MS', cursive;
+        }
+
+        .task-actions {
+            display: flex;
+            gap: 15px;
+            flex-shrink: 0;
+        }
+
+        .action-btn {
+            padding: 15px 25px;
+            border: none;
+            border-radius: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s;
+            min-width: 60px;
+            text-align: center;
+            font-family: 'Comic Sans MS', cursive;
+        }
+
+        .btn-progress {
+            background: linear-gradient(135deg, #4ECDC4, #1DD1A1);
+            color: white;
+            border: 3px solid white;
+        }
+
+        .btn-done {
+            background: linear-gradient(135deg, #1DD1A1, #4ECDC4);
+            color: white;
+            border: 3px solid white;
+        }
+
+        .btn-delete {
+            background: linear-gradient(135deg, #FF6B6B, #FF4F4F);
+            color: white;
+            border: 3px solid white;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 40px;
+            background: linear-gradient(135deg, #FFF5F7, #FFE6EB);
+            border-radius: 30px;
+            border: 4px dashed #FFB6C1;
+            margin: 40px 0;
+        }
+
+        .empty-state h3 {
+            color: #FF1493;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .empty-state p {
+            color: #FF69B4;
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+
+        .error-state {
+            text-align: center;
+            padding: 40px;
+            background: linear-gradient(135deg, #FFD1DC, #FFB6C1);
+            border-radius: 25px;
+            border: 4px solid #FF6B6B;
+            margin: 30px 0;
+        }
+
+        .loading-state {
+            text-align: center;
+            padding: 60px;
+            color: #FF69B4;
+            font-size: 22px;
+        }
+
+        .page-navigation {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 40px 0;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            display: inline-block;
+            padding: 15px 35px;
+            background: linear-gradient(135deg, #FFF5F7, #FFE6EB);
+            color: #FF1493;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 25px;
+            border: 3px solid #FFB6C1;
+            font-family: 'Comic Sans MS', cursive;
+            font-size: 18px;
+            transition: all 0.3s;
+        }
+
+        .nav-link:hover {
+            background: linear-gradient(135deg, #FF69B4, #FF1493);
+            color: white;
+            border-color: #FF1493;
+            transform: translateY(-3px);
+            text-decoration: none;
+        }
+
+        .kitty-emoji {
+            font-size: 40px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 768px) {
+            .tasks-page-container {
+                padding: 20px;
+                margin: 20px auto;
+                border-radius: 25px;
+            }
+
+            .kitty-title {
+                font-size: 36px;
+            }
+
+            .kitty-subtitle {
+                font-size: 24px;
+            }
+
+            .task-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+
+            .task-actions {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .task-info {
+                padding-right: 0;
+            }
+
+            .task-meta {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .page-navigation {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .nav-link {
+                width: 100%;
+                text-align: center;
+                max-width: 300px;
+            }
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="kitty-body">
-    <div class="kitty-container">
-        <h1 class="kitty-title">📝 Мои задачи 🎀</h1>
-        <div class="kitty-emoji">🐱📝🌸</div>
+    <div class="tasks-page-container">
+        <div class="page-header">
+            <h1 class="kitty-title">📝 Мои задачи 🎀</h1>
+            <div class="kitty-emoji">🐱📝🌸✨</div>
+        </div>
 
-        <nav class="kitty-nav">
-            <a href="/">🏠 На главную</a>
-            <a href="/docs">📚 API Документация</a>
-            <a href="/health">❤️ Здоровье</a>
-        </nav>
+        <div class="page-navigation">
+            <a href="/" class="nav-link">🏠 На главную</a>
+            <a href="/docs" class="nav-link">📚 API Документация</a>
+            <a href="/health" class="nav-link">❤️ Мониторинг</a>
+        </div>
 
-        <div class="task-form">
-            <h2 class="kitty-subtitle">✨ Создать новую задачу</h2>
+        <div class="task-form-section">
+            <h2 class="kitty-subtitle" style="text-align: center; margin-bottom: 30px;">✨ Создать новую задачу</h2>
+
             <div class="form-group">
-                <label for="taskTitle">Название задачи:</label>
+                <label for="taskTitle"><i class="fas fa-pencil-alt"></i> Название задачи:</label>
                 <input type="text" id="taskTitle" class="kitty-input" placeholder="Что нужно сделать? 🎀">
             </div>
 
             <div class="form-group">
-                <label for="taskDescription">Описание:</label>
-                <textarea id="taskDescription" class="kitty-input" rows="3" placeholder="Подробности... 🌸"></textarea>
+                <label for="taskDescription"><i class="fas fa-align-left"></i> Описание:</label>
+                <textarea id="taskDescription" class="kitty-input" rows="4" placeholder="Подробности... 🌸"></textarea>
             </div>
 
             <div class="form-group">
-                <label for="taskStatus">Статус:</label>
+                <label for="taskStatus"><i class="fas fa-flag"></i> Статус:</label>
                 <select id="taskStatus" class="kitty-select">
                     <option value="todo">📝 Сделать</option>
                     <option value="in_progress">🏃‍♀️ В процессе</option>
@@ -163,7 +437,7 @@
             </div>
 
             <div class="form-group">
-                <label for="taskCategory">Категория:</label>
+                <label for="taskCategory"><i class="fas fa-folder"></i> Категория:</label>
                 <select id="taskCategory" class="kitty-select">
                     <option value="school">📚 Учеба</option>
                     <option value="home">🏠 Дом</option>
@@ -173,23 +447,25 @@
                 </select>
             </div>
 
-            <div class="form-group">
-                <label for="taskPriority">Приоритет (1-5):</label>
+            <div class="priority-control">
+                <label style="display: block; margin-bottom: 15px; color: #FF1493; font-size: 20px;">
+                    <i class="fas fa-star"></i> Приоритет:
+                </label>
                 <input type="range" id="taskPriority" min="1" max="5" value="3" class="priority-slider">
-                <div id="priorityStars" class="stars-display">
-                    ⭐⭐⭐⭐⭐
-                </div>
+                <div id="priorityStars" class="stars-display">⭐⭐⭐☆☆</div>
             </div>
 
-            <button onclick="createTask()" class="kitty-button">🎀 Создать задачу</button>
+            <button onclick="createTask()" class="create-task-btn">
+                🎀 Создать задачу ✨
+            </button>
         </div>
 
-        <div class="tasks-container">
-            <h2 class="kitty-subtitle">🌸 Мои задачи</h2>
-            <div id="taskList" class="task-list">
-                <div class="loading">
+        <div class="tasks-list-section">
+            <h2 class="kitty-subtitle" style="text-align: center; margin-bottom: 30px;">🌸 Мои задачи</h2>
+            <div id="taskList">
+                <div class="loading-state">
                     <p>Загрузка задач... 🐱</p>
-                    <div class="kitty-emoji">⏳</div>
+                    <div style="font-size: 40px; margin-top: 20px;">⏳</div>
                 </div>
             </div>
         </div>
@@ -234,6 +510,7 @@
             const prioritySlider = document.getElementById('taskPriority');
             const priorityStars = document.getElementById('priorityStars');
             priorityStars.textContent = renderStars(prioritySlider.value);
+            loadTasks();
         });
 
         async function loadTasks() {
@@ -246,9 +523,10 @@
 
                 if (!data.tasks || data.tasks.length === 0) {
                     taskList.innerHTML = `
-                        <div class="kitty-message">
-                            <p>У вас пока нет задач! 🎀</p>
+                        <div class="empty-state">
+                            <h3>У вас пока нет задач! 🎀</h3>
                             <p>Создайте первую задачу выше! ✨</p>
+                            <div style="font-size: 60px; margin: 30px 0;">🐱🌸</div>
                         </div>
                     `;
                     return;
@@ -278,18 +556,24 @@
 
                     taskItem.innerHTML = `
                         <div class="task-info">
-                            <h3 style="margin: 0;">${task.title || 'Без названия'}</h3>
-                            <p style="margin: 5px 0; color: #666;">${task.description || 'Без описания'}</p>
-                            <div>
+                            <h3 class="task-title">${task.title || 'Без названия'}</h3>
+                            <p class="task-description">${task.description || 'Без описания'}</p>
+                            <div class="task-meta">
                                 <span class="task-status ${statusClass}">${statusText}</span>
                                 <span class="priority-stars">${starsHTML}</span>
                                 <span class="task-category">${categoryEmoji} ${categoryName}</span>
                             </div>
                         </div>
                         <div class="task-actions">
-                            <button onclick="updateTask(${task.id}, 'in_progress')" class="kitty-button" style="padding: 8px 16px;">🏃‍♀️</button>
-                            <button onclick="updateTask(${task.id}, 'done')" class="kitty-button" style="padding: 8px 16px;">✅</button>
-                            <button onclick="deleteTask(${task.id})" class="kitty-button" style="padding: 8px 16px; background: #FF6B6B;">🗑️</button>
+                            <button onclick="updateTask(${task.id}, 'in_progress')" class="action-btn btn-progress" title="В процессе">
+                                🏃‍♀️
+                            </button>
+                            <button onclick="updateTask(${task.id}, 'done')" class="action-btn btn-done" title="Выполнено">
+                                ✅
+                            </button>
+                            <button onclick="deleteTask(${task.id})" class="action-btn btn-delete" title="Удалить">
+                                🗑️
+                            </button>
                         </div>
                     `;
 
@@ -299,10 +583,12 @@
             } catch (error) {
                 console.error('Ошибка загрузки задач:', error);
                 document.getElementById('taskList').innerHTML = `
-                    <div class="error-message">
-                        <p>😿 Не удалось загрузить задачи</p>
+                    <div class="error-state">
+                        <h3 style="color: #FF6B6B; margin-bottom: 20px;">😿 Не удалось загрузить задачи</h3>
                         <p>Проверьте подключение к серверу</p>
-                        <button onclick="loadTasks()" class="kitty-button" style="margin-top: 10px;">Повторить</button>
+                        <button onclick="loadTasks()" class="create-task-btn" style="margin-top: 20px; max-width: 200px;">
+                            Повторить
+                        </button>
                     </div>
                 `;
             }
@@ -386,8 +672,6 @@
                 alert('😿 Не удалось удалить задачу');
             }
         }
-
-        document.addEventListener('DOMContentLoaded', loadTasks);
 
         setInterval(loadTasks, 30000);
     </script>
