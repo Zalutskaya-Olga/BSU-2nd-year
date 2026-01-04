@@ -86,25 +86,11 @@ class TaskResponseSchema(BaseModel):
             "description": obj.description,
             "status": obj.status.value if hasattr(obj.status, 'value') else obj.status,
             "category": obj.category.value if hasattr(obj.category, 'value') else obj.category,
-            "priority": obj.priority,
+            "priority": obj.priority,  
             "created_at": obj.created_at.isoformat() if obj.created_at else None,
             "completed_at": obj.completed_at.isoformat() if obj.completed_at else None
         }
         return cls(**data)
-
-    @property
-    def decorated_title(self):
-        decorations = {
-            "school": "📚",
-            "home": "🏠",
-            "work": "💼",
-            "fun": "🎮",
-            "shopping": "🛍️"
-        }
-        return f"{decorations.get(self.category, '🎀')} {self.title}"
-
-    model_config = ConfigDict(from_attributes=True)
-
 
 class TasksListResponseSchema(BaseModel):
     emoji: str = "🐱🎀🌸"
