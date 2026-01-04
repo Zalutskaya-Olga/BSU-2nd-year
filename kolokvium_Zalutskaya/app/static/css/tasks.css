@@ -1,0 +1,268 @@
+.tasks-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.task-form {
+    background: linear-gradient(135deg, #FFF5F7, #FFE6EB);
+    border-radius: 25px;
+    padding: 30px;
+    margin-bottom: 30px;
+    border: 3px solid #FFB6C1;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #FF1493;
+    font-weight: bold;
+}
+
+.task-list {
+    margin-top: 30px;
+}
+
+.task-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    margin: 15px 0;
+    background: white;
+    border-radius: 20px;
+    border: 3px solid #FFB6C1;
+    transition: all 0.3s;
+}
+
+.task-item:hover {
+    border-color: #FF69B4;
+    transform: translateX(10px);
+}
+
+.task-info {
+    flex: 1;
+}
+
+.task-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.task-status {
+    display: inline-block;
+    padding: 5px 15px;
+    border-radius: 15px;
+    font-size: 14px;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+.status-todo {
+    background: #FFE6EB;
+    color: #FF6B6B;
+}
+
+.status-in-progress {
+    background: #E6F7F6;
+    color: #4ECDC4;
+}
+
+.status-done {
+    background: #E6F7EF;
+    color: #1DD1A1;
+}
+
+.priority-stars {
+    display: inline-block;
+    margin-left: 10px;
+    font-size: 18px;
+}
+
+.priority-star {
+    color: #FFD700;
+}
+
+.priority-star-empty {
+    color: #FFB6C1;
+}
+
+.loading {
+    text-align: center;
+    padding: 40px;
+    font-size: 20px;
+    color: #FF69B4;
+}
+
+.error-message {
+    background: linear-gradient(135deg, #FFD1DC, #FFB6C1);
+    border: 3px solid #FF6B6B;
+    border-radius: 20px;
+    padding: 20px;
+    text-align: center;
+    margin: 20px 0;
+}
+
+.priority-slider {
+    width: 100%;
+    margin: 10px 0;
+}
+
+.stars-display {
+    font-size: 24px;
+    text-align: center;
+    margin: 10px 0;
+    min-height: 30px;
+}
+
+.task-title {
+    margin: 0;
+    color: #FF1493;
+}
+
+.task-description {
+    margin: 5px 0;
+    color: #666;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+    margin: 25px 0;
+}
+
+.hero-banner {
+    background: linear-gradient(135deg,
+        #FFB6C1 0%,
+        #FF69B4 25%,
+        #FF1493 50%,
+        #FF69B4 75%,
+        #FFB6C1 100%);
+    color: white;
+    padding: 50px 30px;
+    border-radius: 30px;
+    text-align: center;
+    margin-bottom: 40px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 15px 35px rgba(255, 20, 147, 0.3);
+}
+
+.hero-banner::before {
+    content: "🌸 🎀 🐱 🎀 🌸";
+    position: absolute;
+    top: 15px;
+    left: 0;
+    right: 0;
+    font-size: 28px;
+    opacity: 0.2;
+    animation: float 10s infinite ease-in-out;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.quick-stats {
+    display: flex;
+    justify-content: space-around;
+    background: white;
+    padding: 25px;
+    border-radius: 25px;
+    margin: 30px 0;
+    border: 4px solid #FFB6C1;
+    box-shadow: 0 10px 25px rgba(255, 105, 180, 0.1);
+}
+
+.stat-item {
+    text-align: center;
+    padding: 15px;
+    flex: 1;
+}
+
+.stat-number {
+    font-size: 42px;
+    color: #FF1493;
+    font-weight: bold;
+    text-shadow: 2px 2px 0 #FFB6C1;
+    margin-bottom: 10px;
+}
+
+.stat-item div:last-child {
+    color: #FF69B4;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.kitty-success {
+    background: linear-gradient(135deg, #E6F7EF, #D1F0E6);
+    border: 3px solid #1DD1A1;
+    color: #1DD1A1;
+}
+
+.emoji-row {
+    font-size: 24px;
+    margin-top: 20px;
+    text-align: center;
+    letter-spacing: 10px;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.kitty-container {
+    animation: fadeIn 0.8s ease-out;
+}
+
+.task-item {
+    animation: fadeIn 0.5s ease-out;
+}
+
+.kitty-button {
+    position: relative;
+    overflow: hidden;
+}
+
+.kitty-button::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.kitty-button:hover::after {
+    width: 300px;
+    height: 300px;
+}
+
+@media (max-width: 768px) {
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .quick-stats {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .hero-banner {
+        padding: 30px 15px;
+    }
+
+    .kitty-title {
+        font-size: 36px;
+    }
+}
