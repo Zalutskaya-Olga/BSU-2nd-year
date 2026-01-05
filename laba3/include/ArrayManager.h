@@ -16,7 +16,6 @@ private:
     int* m_array;
     int m_size;
     
-    // Prevent copying
     ArrayManager(const ArrayManager&);
     ArrayManager& operator=(const ArrayManager&);
 };
