@@ -1,4 +1,3 @@
-// PlatformSyncTest.cpp
 #include <gtest/gtest.h>
 #include "PlatformSync.h"
 #include "Constants.h"
@@ -8,11 +7,9 @@
 class PlatformSyncTest : public ::testing::Test {
 protected:
     void SetUp() override {
-        // Setup code if needed
     }
 
     void TearDown() override {
-        // Cleanup code if needed
     }
 };
 
@@ -38,7 +35,7 @@ TEST_F(PlatformSyncTest, MutexLockUnlock) {
 }
 
 TEST_F(PlatformSyncTest, EventSetReset) {
-    SyncEvent event = PlatformSync::createEvent(true); // Manual reset
+    SyncEvent event = PlatformSync::createEvent(true);
     
     EXPECT_NO_THROW(PlatformSync::setEvent(&event));
     EXPECT_NO_THROW(PlatformSync::resetEvent(&event));
@@ -49,8 +46,7 @@ TEST_F(PlatformSyncTest, EventSetReset) {
 TEST_F(PlatformSyncTest, EventWaitWithTimeout) {
     SyncEvent event = PlatformSync::createEvent(false);
     
-    // Should timeout immediately since event is not signaled
-    bool result = PlatformSync::waitForEvent(&event, 10); // 10ms timeout
+    bool result = PlatformSync::waitForEvent(&event, 10);
     EXPECT_FALSE(result);
     
     PlatformSync::destroyEvent(&event);
@@ -73,9 +69,9 @@ TEST_F(PlatformSyncTest, ThreadCreation) {
 
 TEST_F(PlatformSyncTest, SleepFunction) {
     auto start = std::chrono::steady_clock::now();
-    PlatformSync::sleep(50); // Sleep for 50ms
+    PlatformSync::sleep(50);
     auto end = std::chrono::steady_clock::now();
     
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-    EXPECT_GE(duration.count(), 45); // Allow some tolerance
+    EXPECT_GE(duration.count(), 45);
 }
