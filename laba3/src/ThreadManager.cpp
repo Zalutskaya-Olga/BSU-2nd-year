@@ -35,7 +35,6 @@ bool ThreadManager::initialize(int threadCount, ArrayManager* arrayManager) {
         m_threadContexts.resize(threadCount);
         m_threadActiveFlags.resize(threadCount, true);
         
-        // Initialize thread data
         for (int i = 0; i < threadCount; ++i) {
             m_threadActiveFlags[i] = true;
             
@@ -43,14 +42,12 @@ bool ThreadManager::initialize(int threadCount, ArrayManager* arrayManager) {
             m_threadContexts[i].arrayManager = arrayManager;
             m_threadContexts[i].criticalSection = &m_criticalSection;
             
-            // Create events
-            m_threadContexts[i].startEvent = PlatformSync::createEvent(true); // Manual reset
-            m_threadContexts[i].suspendEvent = PlatformSync::createEvent(false); // Auto reset
-            m_threadContexts[i].continueEvent = PlatformSync::createEvent(false); // Auto reset
-            m_threadContexts[i].terminateEvent = PlatformSync::createEvent(false); // Auto reset
-            m_threadContexts[i].threadFinished = PlatformSync::createEvent(false); // Auto reset
+            m_threadContexts[i].startEvent = PlatformSync::createEvent(true);
+            m_threadContexts[i].suspendEvent = PlatformSync::createEvent(false);
+            m_threadContexts[i].continueEvent = PlatformSync::createEvent(false);
+            m_threadContexts[i].terminateEvent = PlatformSync::createEvent(false);
+            m_threadContexts[i].threadFinished = PlatformSync::createEvent(false);
             
-            // Create thread
             m_threadHandles[i] = PlatformSync::createThread(markerThread, &m_threadContexts[i]);
         }
         
@@ -139,10 +136,8 @@ void* ThreadManager::markerThread(void* parameter) {
         return NULL;
     }
     
-    // Wait for start signal
     PlatformSync::waitForEvent(&context->startEvent, Constants::INFINITE_TIMEOUT);
     
-    // Initialize random generator
     srand(context->threadId);
     
     std::vector<int> markedIndices;
@@ -168,7 +163,6 @@ void* ThreadManager::markerThread(void* parameter) {
             
             PlatformSync::setEvent(&context->suspendEvent);
             
-            // Wait for continue or terminate signal
             bool gotTerminateSignal = false;
             while (true) {
                 if (PlatformSync::waitForEvent(&context->terminateEvent, 100)) {
@@ -181,7 +175,6 @@ void* ThreadManager::markerThread(void* parameter) {
             }
             
             if (gotTerminateSignal) {
-                // Termination signal
                 PlatformSync::enterCriticalSection(context->criticalSection);
                 for (size_t i = 0; i < markedIndices.size(); ++i) {
                     context->arrayManager->setElement(markedIndices[i], 0);
