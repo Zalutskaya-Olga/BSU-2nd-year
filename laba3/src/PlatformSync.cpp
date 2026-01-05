@@ -73,7 +73,6 @@ bool PlatformSync::waitForEvent(SyncEvent* event, unsigned int timeoutMs) {
         }
     }
     
-    // For auto-reset events, reset after wait
     event->signaled = false;
     pthread_mutex_unlock(&event->mutex);
     return true;
