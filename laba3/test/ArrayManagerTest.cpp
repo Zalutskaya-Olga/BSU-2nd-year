@@ -1,4 +1,3 @@
-// ArrayManagerTest.cpp
 #include <gtest/gtest.h>
 #include "ArrayManager.h"
 #include "Constants.h"
@@ -6,11 +5,9 @@
 class ArrayManagerTest : public ::testing::Test {
 protected:
     void SetUp() override {
-        // Setup code if needed
     }
 
     void TearDown() override {
-        // Cleanup code if needed
     }
 };
 
@@ -29,7 +26,6 @@ TEST_F(ArrayManagerTest, ConstructorInvalidSize) {
 TEST_F(ArrayManagerTest, GetSetElement) {
     ArrayManager manager(5);
     
-    // Test valid indices
     EXPECT_NO_THROW(manager.setElement(0, 10));
     EXPECT_EQ(manager.getElement(0), 10);
     
@@ -49,15 +45,12 @@ TEST_F(ArrayManagerTest, GetSetElementInvalidIndex) {
 TEST_F(ArrayManagerTest, InitializeWithZeros) {
     ArrayManager manager(5);
     
-    // Set some values
     manager.setElement(0, 1);
     manager.setElement(2, 3);
     manager.setElement(4, 5);
     
-    // Reset to zeros
     manager.initializeWithZeros();
     
-    // Verify all elements are zero
     for (int i = 0; i < manager.getSize(); ++i) {
         EXPECT_EQ(manager.getElement(i), 0);
     }
@@ -66,6 +59,5 @@ TEST_F(ArrayManagerTest, InitializeWithZeros) {
 TEST_F(ArrayManagerTest, PrintArrayNoCrash) {
     ArrayManager manager(3);
     
-    // Should not crash
     EXPECT_NO_THROW(manager.printArray());
 }
