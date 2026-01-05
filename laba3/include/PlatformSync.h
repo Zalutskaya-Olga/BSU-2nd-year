@@ -5,7 +5,6 @@
 #include <unistd.h>
 #include <sys/time.h>
 
-// Platform-independent synchronization types
 typedef struct {
     pthread_mutex_t mutex;
     pthread_cond_t condition;
@@ -15,7 +14,6 @@ typedef struct {
 typedef pthread_t SyncThread;
 typedef pthread_mutex_t SyncMutex;
 
-// Platform-independent functions
 class PlatformSync {
 public:
     static SyncEvent createEvent(bool manualReset = false);
