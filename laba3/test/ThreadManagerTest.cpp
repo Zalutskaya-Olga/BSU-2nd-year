@@ -1,4 +1,3 @@
-// ThreadManagerTest.cpp
 #include <gtest/gtest.h>
 #include "ThreadManager.h"
 #include "ArrayManager.h"
@@ -33,11 +32,9 @@ TEST_F(ThreadManagerTest, InitializeValidParameters) {
 TEST_F(ThreadManagerTest, InitializeInvalidParameters) {
     ThreadManager manager;
     
-    // Invalid thread count
     EXPECT_FALSE(manager.initialize(0, arrayManager));
     EXPECT_FALSE(manager.initialize(Constants::MAX_THREAD_COUNT + 1, arrayManager));
     
-    // Null array manager
     EXPECT_FALSE(manager.initialize(3, nullptr));
 }
 
@@ -48,8 +45,8 @@ TEST_F(ThreadManagerTest, ThreadActiveStatus) {
     EXPECT_TRUE(manager.isThreadActive(1));
     EXPECT_TRUE(manager.isThreadActive(2));
     EXPECT_TRUE(manager.isThreadActive(3));
-    EXPECT_FALSE(manager.isThreadActive(0)); // Invalid ID
-    EXPECT_FALSE(manager.isThreadActive(4)); // Invalid ID
+    EXPECT_FALSE(manager.isThreadActive(0));
+    EXPECT_FALSE(manager.isThreadActive(4));
 }
 
 TEST_F(ThreadManagerTest, Cleanup) {
