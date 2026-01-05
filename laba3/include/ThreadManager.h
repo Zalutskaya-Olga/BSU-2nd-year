@@ -43,7 +43,6 @@ private:
     int m_activeThreadCount;
     SyncMutex m_criticalSection;
     
-    // Prevent copying
     ThreadManager(const ThreadManager&);
     ThreadManager& operator=(const ThreadManager&);
 };
