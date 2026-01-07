@@ -31,20 +31,6 @@
 - **Контейнеризация**: Docker, Docker Compose
 - **Тестирование**: Google Test, модульные тесты
 
-### C++ проекты (Lab1-Lab5):
-```bash
-mkdir build && cd build
-cmake .. && make
-./название_программы
-Python проект (Lab6):
-
-bash
-cd hello-kitty-api
-docker-compose up -d
-# Или
-pip install -r requirements.txt
-python run_kitty.py
-
 ##  Лицензия
 
 Учебные материалы для изучения системного программирования.
