@@ -1,8 +1,23 @@
-cd /Users/olga_zalutskaya/Documents/oc/kolokvium_Zalutskay
-python -m pytest tests/test_tasks.py -v
+# Hello Kitty Todo API 🐱🎀🌸
 
+Кавайное веб-приложение для управления задачами в стиле Hello Kitty с бэкендом на FastAPI.
 
+## 🎀 Особенности
 
+- **Красивый интерфейс** - тема Hello Kitty с розовыми цветами и бантиками
+- **Полный CRUD** - создание, чтение, обновление и удаление задач
+- **Категории задач** - школа, дом, работа, развлечения, шопинг
+- **Приоритеты** - от 1 до 5 звезд ⭐
+- **Кэширование Redis** - для повышения производительности
+- **Метрики Prometheus** - мониторинг производительности
+- **Docker-развертывание** - готовые контейнеры для быстрого запуска
+- **Здоровье системы** - проверка состояния всех компонентов
+
+## 🌐 Доступ к сервисам
+API и главная страница: http://localhost:8888
+
+### С Docker Compose (рекомендуется):
+```bash
 в первом терминале 
 brew services start redis
 redis-cli CONFIG SET requirepass "kitty_password"
@@ -17,10 +32,3 @@ docker-compose ps
 docker-compose logs -f api
 
 docker-compose down
-
-
-
-
-
- 🌐 Доступ к сервисам
-API и главная страница: http://localhost:8888
