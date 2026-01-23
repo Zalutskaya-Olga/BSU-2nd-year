@@ -1,0 +1,78 @@
+<Forecast>
+    <city name="Минск" warnings="no">
+        <day date="2026-01-22">
+            <temp>-15</temp>
+            <weather>облачно</weather>
+        </day>
+        <day date="2026-01-16">
+            <temp>-18</temp>
+            <weather>ясно</weather>
+        </day>
+        <day date="2026-01-17">
+            <temp>-16</temp>
+            <weather>дождь</weather>
+        </day>
+    </city>
+    <city name="Могилев" warnings="yes">
+        <day date="2026-01-28">
+            <temp>-33</temp>
+            <weather>порывистый ветер</weather>
+        </day>
+        <day date="2026-01-26">
+            <temp>-18</temp>
+            <weather>ветренно</weather>
+        </day>
+        <day date="2026-01-27">
+            <temp>-16</temp>
+            <weather>ураган</weather>
+        </day>
+    </city>
+    <city name="Гомель" warnings="no">
+        <day date="2026-01-30">
+            <temp>-15</temp>
+            <weather>облачно</weather>
+        </day>
+        <day date="2026-01-31">
+            <temp>-18</temp>
+            <weather>ясно</weather>
+        </day>
+        <day date="2026-01-14">
+            <temp>-16</temp>
+            <weather>дождливо</weather>
+        </day>
+    </city>
+    <city name="Витебск" warnings="yes">
+        <day date="2026-01-17">
+            <temp>-17</temp>
+            <weather>порывистый ветер</weather>
+        </day>
+        <day date="2026-01-15">
+            <temp>-21</temp>
+            <weather>ураган</weather>
+        </day>
+    </city>
+    <city name="Брест" warnings="no">
+        <day date="2026-01-12">
+            <temp>-13</temp>
+            <weather>облачно</weather>
+        </day>
+        <day date="2026-01-06">
+            <temp>-24</temp>
+            <weather>местами дожди</weather>
+        </day>
+        <day date="2026-01-09">
+            <temp>-11</temp>
+            <weather>дождливо</weather>
+        </day>
+    </city>
+    <city name="Гродно" warnings="yes">
+        <day date="2026-01-07">
+            <temp>-17</temp>
+            <weather>ливень</weather>
+        </day>
+        <day date="2026-01-03">
+            <temp>-21</temp>
+            <weather>град</weather>
+        </day>
+    </city>
+</Forecast>
